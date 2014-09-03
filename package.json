@@ -1,0 +1,29 @@
+{
+  "name": "smorescript",
+  "version": "0.0.0-dev",
+  "description": "ECMAScript, with added boring",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:forivall/smorescript.git"
+  },
+  "keywords": [
+    "javascript",
+    "language",
+    "compiler"
+  ],
+  "author": {
+    "name": "Jordan Klassen",
+    "email": "forivall@gmail.com"
+  },
+  "licenses": [{
+    "type": "BSD",
+    "url": "https://github.com/forivall/smorescript/raw/master/LICENSE.BSD"
+  }],
+  "bugs": {
+    "url": "https://github.com/forivall/smorescript/issues"
+  }
+}
