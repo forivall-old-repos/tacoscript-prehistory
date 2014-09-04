@@ -158,3 +158,29 @@ s\string
 ```
 
 Precedence is equal to unary `+`, with right associativity. Additional operators can be added with sweet.js (when compatibility works).
+
+* Discourage use of `,` except in argument lists, and as the comma operator
+js
+```JavaScript
+array = [1, 2, 3, 1 + 2]
+result = doThing(1, {})
+object = {foo: 'bar', baz: 1}
+```
+smore
+```
+array = [1 2 3 (1 + 2)]
+result = doThing(1 {})
+object = {(foo: bar) (baz: 1)}
+object = {
+  foo: bar
+  baz: 1
+}
+# OR
+object = {,foo: bar ,baz: 1}  # comma is used like the quote in lisps
+object = {,foo: bar ('baz': 1)}
+object = {,foo: bar  'baz': 1} # use 2 spaces as convention in objects, to avoid visual clutter
+object = {
+  ,foo: bar
+  'baz': 1
+}
+```
