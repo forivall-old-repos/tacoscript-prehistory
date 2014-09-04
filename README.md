@@ -19,7 +19,7 @@ Minimal semicolons and braces. Ideally none. Allow braces for object literals, b
 
 ### Main, simple changes
 js
-```
+```JavaScript
 /* block comment */
 // line comment
 var \u1337 = {};
@@ -31,11 +31,45 @@ foo === bar;
 foo !== bar;
 foo || bar;
 foo && bar;
+```
+smore
+```
+#* block comment *#
+# line comment
+\\u1337 = {}
+foo similarto bar
+ngot foo  # shorthand for not got foo
+got foo
+foo is bar
+foo isnt bar
+foo or bar
+foo and bar
+```
+js
+```JavaScript
 foo ? bar : baz;
 foo ? bar
 : fizz ? bizz
 : baz;
+```
+smore
+```
+# TODO - determine syntax
+# overload if/then/else, like coffeescript
+?if foo ?then bar ?else baz
+if foo then bar else baz
 
+# conditionals in questionmarks, results surrounded by colons
+? foo ?: bar : baz
+? foo ?: bar :? fizz ?: bizz : baz
+
+# use the same syntax for switch / case and ternary??? based on if it's statements or expressions.
+# switch foo case true then bar else baz
+# switch foo case > 5 then bar else baz
+switch foo then bar else baz
+```
+js
+```JavaScript
 () => "foo"
 
 (() => console.log("foo"); void 0); // ES6
@@ -51,36 +85,12 @@ for(var i = 1; i < 0; i++)
 {
   let a = 1; 
 }
-
+// reserved word in smore
 var then;
 ```
 
 smore
 ```
-#* block comment *#
-# line comment
-\\u1337 = {}
-foo similarto bar
-ngot foo  # shorthand for not got foo
-got foo
-foo is bar
-foo isnt bar
-foo or bar
-foo and bar
-# TODO - determine syntax
-# overload if/then/else, like coffeescript
-?if foo ?then bar ?else baz
-if foo then bar else baz
-
-# conditionals in questionmarks, results surrounded by colons
-? foo ?: bar : baz
-? foo ?: bar :? fizz ?: bizz : baz
-
-# use the same syntax for switch / case and ternary??? based on if it's statements or expressions.
-# switch foo case true then bar else baz
-# switch foo case > 5 then bar else baz
-switch foo then bar else baz
-
 () =>> "foo"
 () => console.log("foo")
 () -> console.log("foo")
@@ -118,8 +128,8 @@ global variables are declared with the `global` keyword.
 ### Other changes
 
 js
-```
-!foo
+```JavaScript
+!foo;
 ```
 
 smore
@@ -134,7 +144,7 @@ In addition to the syntax difference, the `not` operator will have lower precede
 * Introduce a cast operator, instead of the practice of various conventions such as `+number` or `~~integer` or `'' + string`
 
 js
-```
+```JavaScript
 +number
 ~~integer
 ''+string
