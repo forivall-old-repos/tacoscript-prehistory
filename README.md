@@ -87,6 +87,8 @@ for(var i = 1; i < 0; i++)
 }
 // reserved word in smore
 var then;
+
+var MyModule = require('my-module');
 ```
 
 smore
@@ -116,7 +118,10 @@ block
   a = 1
 
 var the\u006e;
-# idea: use use some kind of lookup table to determine the letter with the least amount of entropy.
+# idea: use use some kind of lookup table to determine the letter with the least amount of information density.
+
+MyModule = require! 'my-module'
+# of course, this should be replaced with a sweetjs macro when possible.
 ```
 
 ### Semantic changes
@@ -183,4 +188,19 @@ object = {
   ,foo: bar
   'baz': 1
 }
+```
+
+```
+# even lispier example
+a = [(doThing! (require! './a') 'a') 'a']
+a = [doThing(require('./a')) 'a' 'a']
+
+fs.readFile! './a.json', (err file) ->
+  if err then throw err
+  console.log! file.toString!
+# note that, when decompiled, (without annotations) this should become
+fs.readFile! './a.json', (err file) ->
+  if err then throw err
+  console.log(file.toString())
+# unless ! is implemented as a sweetjs macro
 ```
