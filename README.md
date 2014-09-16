@@ -204,3 +204,24 @@ fs.readFile! './a.json', (err file) ->
   console.log(file.toString())
 # unless ! is implemented as a sweetjs macro
 ```
+
+conditional return shorthand
+
+```
+if foo then return bar
+```
+can be written as
+```
+if foo return bar
+```
+
+previous statement shorthand
+
+Stylistically, longer statements should still use normal if statement syntax
+
+the goal here is to keep the return keyword as close to the left hand side as possible to help readability for where functions exit
+
+```
+if foo and bar and baz and reallyLongFunctionNameWhyAreYouDoingThis()
+  return bar
+```
