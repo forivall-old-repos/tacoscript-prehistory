@@ -1,10 +1,12 @@
-# Smorescript
+# Tacoscript
 
 ECMAScript, with added boring!
 
 ## Goals
 
 * Have a one to one representation of the Spidermonkey Parser API AST
+  * this means that tacoscript can be a simple alternate representation of vanilla es6 javascript
+  * tacoscript can be generated from _any_ javascript, with standard formatting, defined in file headers or config files in the directory, or command line arguments (known as directives)
 * Be fully compatible with ES6+
 * Be compatible with [sweet.js](http://sweetjs.org)
 
@@ -14,6 +16,10 @@ Don't use `!` for negation, instead, use it more as an execution marker, or kind
 Use words for logic, and symbols for math.
 
 Minimal semicolons and braces. Ideally none. Allow braces for object literals, but prefer indentation for blocks.
+
+## General decisions to make
+- Should `:` be used instead of `then`?
+- Should `:` be mandatory like python?
 
 ## Target syntax
 
@@ -32,14 +38,14 @@ foo !== bar;
 foo || bar;
 foo && bar;
 ```
-smore
+taco
 ```
 #* block comment *#
 # line comment
 \\u1337 = {}
 foo similarto bar
-ngot foo  # shorthand for not got foo
-got foo
+foo?
+not foo?
 foo is bar
 foo isnt bar
 foo or bar
@@ -52,21 +58,22 @@ foo ? bar
 : fizz ? bizz
 : baz;
 ```
-smore
+taco
 ```
-# TODO - determine syntax
-# overload if/then/else, like coffeescript
-?if foo ?then bar ?else baz
-if foo then bar else baz
-
-# conditionals in questionmarks, results surrounded by colons
-? foo ?: bar : baz
-? foo ?: bar :? fizz ?: bizz : baz
-
-# use the same syntax for switch / case and ternary??? based on if it's statements or expressions.
-# switch foo case true then bar else baz
-# switch foo case > 5 then bar else baz
-switch foo then bar else baz
+toggle foo on bar off baz
+toggle foo
+  on bar
+  off baz
+  
+toggle foo
+  on
+    bar
+  off
+    baz
+    
+toggle foo on bar
+  off toggle fizz on bizz
+    off baz
 ```
 js
 ```JavaScript
@@ -85,19 +92,19 @@ for(var i = 1; i < 0; i++)
 {
   let a = 1; 
 }
-// reserved word in smore
+// reserved word in taco
 var then;
 
 var MyModule = require('my-module');
 ```
 
-smore
+taco
 ```
 () =>> "foo"
 () => console.log("foo")
 () -> console.log("foo")
 () ->> "foo"
-!declared = ()  ->> "foo"
+!declared = () ->> "foo"
 () *->>
   yield 1
   yield 2
@@ -121,7 +128,7 @@ var the\u006e;
 # idea: use use some kind of lookup table to determine the letter with the least amount of information density.
 
 MyModule = require! 'my-module'
-# of course, this should be replaced with a sweetjs macro when possible.
+# of course, this should be replaced with a sweetjs macro when possible, so that the `!` isn't required (if i do implement sweetjs compatability)
 ```
 
 ### Semantic changes
@@ -137,7 +144,7 @@ js
 !foo;
 ```
 
-smore
+taco
 ```
 not foo
 ```
@@ -155,7 +162,7 @@ js
 ''+string
 ```
 
-smore
+taco
 ```
 n\number
 i\integer
@@ -164,29 +171,23 @@ s\string
 
 Precedence is equal to unary `+`, with right associativity. Additional operators can be added with sweet.js (when compatibility works).
 
-* Discourage use of `,` except in argument lists, and as the comma operator
+* Discourage use of `,` except in argument lists, and as the comma operator. standard style will be with commas
+  * maybe not, i'll rethink this
 js
 ```JavaScript
 array = [1, 2, 3, 1 + 2]
 result = doThing(1, {})
 object = {foo: 'bar', baz: 1}
 ```
-smore
+taco
 ```
 array = [1 2 3 (1 + 2)]
 result = doThing(1 {})
-object = {(foo: bar) (baz: 1)}
+object = {foo: bar , baz: 1}
+object = {foo: bar (baz: 1)}
 object = {
   foo: bar
   baz: 1
-}
-# OR
-object = {,foo: bar ,baz: 1}  # comma is used like the quote in lisps
-object = {,foo: bar ('baz': 1)}
-object = {,foo: bar  'baz': 1} # use 2 spaces as convention in objects, to avoid visual clutter
-object = {
-  ,foo: bar
-  'baz': 1
 }
 ```
 
