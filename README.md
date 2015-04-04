@@ -4,11 +4,14 @@ ECMAScript, with added boring!
 
 ## Goals
 
-* Have a one to one representation of the Spidermonkey Parser API AST
+* Have a one to one representation of the Spidermonkey Parser API AST or the babeljs AST
   * this means that tacoscript can be a simple alternate representation of vanilla es6 javascript
   * tacoscript can be generated from _any_ javascript, with standard formatting, defined in file headers or config files in the directory, or command line arguments (known as directives)
-* Be fully compatible with ES6+
+* Be fully compatible with ES6+ via babel
+## Aspirations
 * Be compatible with [sweet.js](http://sweetjs.org)
+  * since sweetjs and babel are incompatible, this is unlikely, unless sweetjs is updated to work with babel somehow
+* use git hooks + magic to allow switching between representations just by switching branches
 
 ## Design Philosophy
 Don't use `!` for negation, instead, use it more as an execution marker, or kinda like how CSS uses it for `!important`.
@@ -16,10 +19,6 @@ Don't use `!` for negation, instead, use it more as an execution marker, or kind
 Use words for logic, and symbols for math.
 
 Minimal semicolons and braces. Ideally none. Allow braces for object literals, but prefer indentation for blocks.
-
-## General decisions to make
-- Should `:` be used instead of `then`?
-- Should `:` be mandatory like python?
 
 ## Target syntax
 
