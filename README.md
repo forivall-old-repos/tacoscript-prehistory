@@ -114,7 +114,6 @@ while true then bar()
 while true
   bar()
 
-# TODO: look up that other altjs i looked at for a better word other than update
 for i = 1 while i < 0 update i++
   bar()
 for i = 1 while i < 0 update i++ then bar()
