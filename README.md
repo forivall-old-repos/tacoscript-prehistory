@@ -8,6 +8,7 @@ ECMAScript, with added boring!
   * this means that tacoscript can be a simple alternate representation of vanilla es6 javascript
   * tacoscript can be generated from _any_ javascript, with standard formatting, defined in file headers or config files in the directory, or command line arguments (known as directives)
 * Be fully compatible with ES6+ via babel
+
 ## Aspirations
 * Be compatible with [sweet.js](http://sweetjs.org)
   * since sweetjs and babel are incompatible, this is unlikely, unless sweetjs is updated to work with babel somehow
