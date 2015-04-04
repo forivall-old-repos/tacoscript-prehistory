@@ -21,6 +21,15 @@ Use words for logic, and symbols for math.
 
 Minimal semicolons and braces. Ideally none. Allow braces for object literals, but prefer indentation for blocks.
 
+## Implementation Plan
+
+[ ] Improve this documentation checking each es6 feature from an es6 spec and detailing any departures
+[ ] Fork acorn-babel and modify to parse tacoscript
+  [ ] implement off-side rule parsing
+  [ ] implement other keywords
+[ ] Fork / reimplement esgenerate to generate es6 from babel ASTs
+[ ] Implement tacogenerate to generate tacoscript from babel ASTs
+
 ## Target syntax
 
 ### Main, simple changes
