@@ -116,8 +116,8 @@ taco
 () => console.log("foo")
 () -> console.log("foo")
 () ->> "foo"
-!declared = () ->> "foo"
-() *->>
+function declared() ->> "foo"
+() *->
   yield 1
   yield 2
 
