@@ -1,5 +1,5 @@
 {
-  "name": "smorescript",
+  "name": "tacoscript",
   "version": "0.0.0-dev",
   "description": "ECMAScript, with added boring",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:forivall/smorescript.git"
+    "url": "git@github.com:forivall/tacoscript.git"
   },
   "keywords": [
     "javascript",

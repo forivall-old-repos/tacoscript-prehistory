@@ -23,12 +23,12 @@ Minimal semicolons and braces. Ideally none. Allow braces for object literals, b
 
 ## Implementation Plan
 
-[ ] Improve this documentation checking each es6 feature from an es6 spec and detailing any departures
-[ ] Fork acorn-babel and modify to parse tacoscript
-  [ ] implement off-side rule parsing
-  [ ] implement other keywords
-[ ] Fork / reimplement esgenerate to generate es6 from babel ASTs
-[ ] Implement tacogenerate to generate tacoscript from babel ASTs
+* [ ] Improve this documentation checking each es6 feature from an es6 spec and detailing any departures
+* [ ] Fork acorn-babel and modify to parse tacoscript
+  * [ ] implement off-side rule parsing
+  * [ ] implement other keywords
+* [ ] Fork / reimplement esgenerate to generate es6 from babel ASTs
+* [ ] Implement tacogenerate to generate tacoscript from babel ASTs
 
 ## Target syntax
 
@@ -73,13 +73,13 @@ toggle foo on bar off baz
 toggle foo
   on bar
   off baz
-  
+
 toggle foo
   on
     bar
   off
     baz
-    
+
 toggle foo on bar
   off toggle fizz on bizz
     off baz
@@ -88,7 +88,7 @@ js
 ```JavaScript
 () => "foo"
 
-(() => console.log("foo"); void 0); // ES6
+(() => {console.log("foo")}); // ES6
 (function() { return "foo"}).bind(this); // ES5
 
 function() { console.log("foo"); };
@@ -99,12 +99,15 @@ do that(); while (true)
 while(true) bar();
 for(var i = 1; i < 0; i++)
 {
-  let a = 1; 
+  let a = 1;
 }
 // reserved word in taco
 var then;
 
 var MyModule = require('my-module');
+
+(function() {})()
+(function() {}())
 ```
 
 taco
@@ -129,7 +132,7 @@ for i = 1 while i < 0 update i++ then bar()
 for i = 1 upto 0 by 1 then bar()
 for i of [] then bar()
 
-block
+do
   a = 1
 
 var the\u006e;
@@ -137,6 +140,9 @@ var the\u006e;
 
 MyModule = require! 'my-module'
 # of course, this should be replaced with a sweetjs macro when possible, so that the `!` isn't required (if i do implement sweetjs compatability)
+
+exec () ->
+exec#$invokeInParens$# () ->
 ```
 
 ### Semantic changes
@@ -230,7 +236,12 @@ Stylistically, longer statements should still use normal if statement syntax
 
 the goal here is to keep the return keyword as close to the left hand side as possible to help readability for where functions exit
 
+
+
 ```
 if foo and bar and baz and reallyLongFunctionNameWhyAreYouDoingThis()
   return bar
 ```
+
+notes: special formatting directives: `#$DIRECTIVE_HERE$#`
+include raw js (for empty statements): ```$`;// javascript here`#```
