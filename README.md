@@ -245,3 +245,13 @@ if foo and bar and baz and reallyLongFunctionNameWhyAreYouDoingThis()
 
 notes: special formatting directives: `#$DIRECTIVE_HERE$#`
 include raw js (for empty statements): ```$`;// javascript here`#```
+
+### indentation output directives
+Since whitespace is significant, we need some way to control whitespace output for oddly formatted js
+
+increase preceding indent: `>`  
+decrease preceding indent: `<`  
+replace preceding spaces: `r{\t\t}`  
+
+so that would look like `#$<$#decreased_indent_statement()`
+
