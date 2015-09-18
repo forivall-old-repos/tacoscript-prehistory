@@ -1,0 +1,22 @@
+{
+  "name": "horchata",
+  "version": "0.0.1-pre",
+  "description": "Parser for tacoscript language. Based on babylon parser",
+  "author": {
+    "name": "Jordan Klassen",
+    "email": "forivall@gmail.com"
+  },
+  "license": "MIT",
+  "licenses": [{
+    "type": "MIT",
+    "url": "https://github.com/forivall/tacoscript/raw/master/LICENSE"
+  }],
+  "bugs": {
+    "url": "https://github.com/forivall/tacoscript/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:forivall/tacoscript.git"
+  },
+  "main": "lib/index.js"
+}

@@ -1,0 +1,50 @@
+{
+  "name": "tacoscript",
+  "version": "0.0.1-pre",
+  "description": "CLI Tools for Tacoscript",
+  "author": {
+    "name": "Jordan Klassen",
+    "email": "forivall@gmail.com"
+  },
+  "license": "MIT",
+  "licenses": [{
+    "type": "MIT",
+    "url": "https://github.com/forivall/tacoscript/raw/master/LICENSE"
+  }],
+  "bugs": {
+    "url": "https://github.com/forivall/tacoscript/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:forivall/tacoscript.git"
+  },
+  "keywords": [
+    "javascript",
+    "language",
+    "compiler",
+    "translating-compiler",
+    "modules",
+    "babel",
+    "altjs",
+    "es6"
+  ],
+  "preferGlobal": true,
+  "dependencies": {
+    "tacoscript-core": "*",
+    "chokidar": "^1.0.0",
+    "commander": "^2.6.0",
+    "convert-source-map": "^1.1.0",
+    "fs-readdir-recursive": "^0.1.0",
+    "glob": "^5.0.5",
+    "lodash": "^3.2.0",
+    "output-file-sync": "^1.1.0",
+    "path-exists": "^1.0.0",
+    "path-is-absolute": "^1.0.0",
+    "source-map": "^0.4.0",
+    "slash": "^1.0.0"
+  },
+  "bin": {
+    "taco": "./bin/taco.js",
+    "taco-node": "./bin/taco-node.js"
+  }
+}
