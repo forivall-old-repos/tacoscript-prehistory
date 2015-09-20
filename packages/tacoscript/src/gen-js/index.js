@@ -1,4 +1,3 @@
-import Whitespace from "./whitespace";
 import repeating from "repeating";
 import SourceMap from "./source-map";
 import Position from "./position";

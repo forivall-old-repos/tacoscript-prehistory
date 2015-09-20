@@ -1,9 +1,8 @@
-// var genJs = require("../lib/gen-js");
-var genJs = require("../lib/generation");
+var genJs = require("../lib/gen-js");
 // var genTaco = require("../lib/gen-taco");
 var assert   = require("assert");
 var helper   = require("./_helper");
-var parseJs  = require("../lib/helpers/parse-js");
+var parseJs  = require("../lib/parse-js");
 // var horchata = require("horchata");
 var chai     = require("chai");
 var t        = require("../lib/types");

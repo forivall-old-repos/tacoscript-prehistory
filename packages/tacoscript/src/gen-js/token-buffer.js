@@ -31,11 +31,11 @@ export default class TokenBuffer {
   }
 
   indent() {
-    console.log('indent');
+    // console.log('indent');
   }
 
   dedent() {
-    console.log('dedent');
+    // console.log('dedent');
   }
 
   /**
