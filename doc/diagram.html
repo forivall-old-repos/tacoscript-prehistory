@@ -1,0 +1,22 @@
+<html><head><meta charset="utf-8"/><link type="text/css" rel="stylesheet" href="icomoon/style.css"/><style type="text/css">body{font-family:avenir,'avenir next',elvetica,arial,sans-serif;}
+body { box-sizing: border-box; font-family: sans-serif; max-width: 700px; margin: auto; }
+h1,h2,h3,h4,h5,h6 { font-family: sans-serif; }
+h1:first-child,h2:first-child,h3:first-child,h4:first-child,h5:first-child,h6:first-child { margin-top: 0; }
+.box { width: 45%; text-align: center; margin: 15px; color: white; }
+.box h3 { margin-bottom: 0.3em; }
+.row { display: flex; }
+.row > .ico { flex-grow: 1; text-align: center; display: flex; justify-content: center; align-content: center; flex-direction: column; }
+.ico.icon-arrow-up2, .ico.icon-arrow-down2, .ico.with-caption { width: 50%; text-align: center; }
+.row::after { clear: both; }
+.column {  }
+.mid { width: 10%; float: left; text-align: center; display: flex; }
+.mid > .icon-arrow-left2,.mid > .icon-arrow-right2 { flex-grow: 1; }
+.parser-js { padding: 25px; background-color: #334B65; /*tint(#001f3f, 20)*/ }
+.transformer-js-to-taco { padding: 25px; background-color: #85144b }
+.generator-js-to-taco { padding: 25px; background-color: #3D9970 }
+.parser-taco { padding: 25px; background-color: #0068C3; /*shade(#0074D9, 10)*/}
+.transformer-taco-to-js { padding: 25px; background-color: #B22D25; /*shade(#FF4136, 30)*/ }
+.generator-taco-to-js { padding: 25px; background-color: #208E2C; /*shade(#2ECC40, 30)*/ }
+.whitespace-tokenization { margin: 4px auto; padding: 2px 4px; border: 2px dotted #B2D1EC; background-color: #334B65; color: white; /*tint(#0068C3, 70)*/ }
+.clearfix:before, .clearfix:after { content: " "; display: table; }
+</style></head><body><div class="row"><div class="box parser-taco"><h3>Tacoscript Parser (Horchata)</h3>Turns code into AST</div><div class="ico icon-arrow-left2"></div><div class="box generator-js-to-taco"><h3>Tacoscript Generator</h3>Turns JavaScript AST into Tacoscript Code</div></div><div class="row"><div class="ico icon-arrow-down2"></div><div class="ico icon-arrow-up2"></div></div><div class="row"><div class="box transformer-taco-to-js"><h3>Transformer</h3>Manipulates AST to translate tacoscript syntax to javascript conventions</div><div class="box transformer-js-to-taco"><h3>Transformer</h3>Manipulates AST to translate javascript conventions to tacoscript syntax</div></div><div class="row"><div class="ico icon-arrow-down2"></div><div class="ico with-caption"><div class="icon-arrow-up2"></div><small class="whitespace-tokenization">Whitespace tokenization</small><div class="icon-arrow-up2"></div></div></div><div class="row"><div class="box generator-taco-to-js"><h3>Javascript Generator</h3>Turns AST into Code</div><div class="ico icon-arrow-right2"></div><div class="box parser-js"><h3>Javascript Parser (Babylon)</h3>Turns code into AST</div></div></body></html>
