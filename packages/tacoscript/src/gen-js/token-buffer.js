@@ -55,20 +55,12 @@ export default class TokenBuffer {
   }
 
   /**
-   * Add a right brace to the buffer.
-   */
-
-  rightBrace() {
-    this.push("}");
-  }
-
-  /**
    * Add a keyword to the buffer.
    */
 
   keyword(name) {
     this.push(name);
-    this.space();
+    this.wordBoundary();
   }
 
   /**
@@ -79,6 +71,10 @@ export default class TokenBuffer {
     if (force || this.tokens.length && !this.isLast(" ") && !this.isLast("\n")) {
       this.push(" ");
     }
+  }
+
+  wordBoundary(word) {
+    // TODO ; maybe move to CodeGenerator
   }
 
   /**

@@ -21,12 +21,11 @@ export function Program(node, parent) {
 export function BlockStatement(node, parent) {
   this.push("{");
   if (node.body.length) {
-    this.newline();
+    // this.newline();
     this.printSequence(node.body, node, { indent: true });
-    this.rightBrace();
+    this.endBlock();
   } else {
-    this.catchUpToBlockEnd();
-    this.push("}");
+    this.endBlock();
   }
 }
 

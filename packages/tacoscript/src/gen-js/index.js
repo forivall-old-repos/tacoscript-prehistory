@@ -74,6 +74,10 @@ class CodeGenerator {
   catchUp(node) {
     // catch up to this nodes first token if we're behind
     // TODO
+    if (this._index > node.firstTokenIndex) {
+      console.log('catchup called when position is past node!', this._index, node.firstTokenIndex);
+      // throw new Error('AssertionError: catchup called when position is past node');
+    }
     for (let i = this._index; i < node.firstTokenIndex; i++) {
       let token = this.tokens[i];
       if (includes(['Whitespace', 'CommentLine', 'CommentBlock'], token.type)) {
@@ -87,8 +91,32 @@ class CodeGenerator {
   catchUpToBlockEnd() {
     // catch up to this nodes first token if we're behind
     // TODO
-    console.log('catchup');
+    // console.log('catchup to block end');
+    this.catchUpToPunctuation('}');
   }
+
+  /**
+   * Add a right brace to the buffer.
+   */
+
+  endBlock() {
+    this.catchUpToBlockEnd();
+    this.push("}");
+  }
+
+  catchUpToPunctuation(label) {
+    let token, i;
+    for (i = this._index; (token = this.tokens[i]) && token.type.label !== label; i++) {
+      if (includes(['Whitespace', 'CommentLine', 'CommentBlock'], token.type)) {
+        console.log('catchup', i, token.type.label);
+        this._push(token);
+      }
+    }
+    this._index = i + 1;
+  }
+  catchUpToLParen() { this.catchUpToPunctuation('('); }
+  catchUpToRParen() { this.catchUpToPunctuation(')'); }
+  catchUpToLBrace() { this.catchUpToPunctuation('{'); }
 
   /**
    * Print (Tokenize) a plain node.
@@ -200,7 +228,7 @@ class CodeGenerator {
     if (t.isEmptyStatement(node)) {
       this.semicolon();
     } else {
-      this.push(" ");
+      this.wordBoundary();
       this.print(node, parent);
     }
   }

@@ -50,7 +50,7 @@ export function _method(node) {
   }
 
   this._params(value);
-  this.space();
+  this.wordBoundary();
   this.print(value.body, node);
 }
 
@@ -59,19 +59,19 @@ export function _method(node) {
  */
 
 export function FunctionExpression(node, parent) {
-  if (node.async) this.push("async ");
+  if (node.async) { this.keyword("async"); }
   this.push("function");
   if (node.generator) this.push("*");
 
   if (node.id) {
-    this.push(" ");
+    this.wordBoundary();
     this.print(node.id, node);
   } else {
-    this.space();
+    this.wordBoundary();
   }
 
   this._params(node);
-  this.space();
+  this.wordBoundary();
   this.print(node.body, node);
 }
 

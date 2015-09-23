@@ -51,7 +51,7 @@ export function ClassBody(node, parent) {
     this.dedent();
 
     this.catchUpToBlockEnd();
-    this.rightBrace();
+    this.endBlock();
   }
 }
 

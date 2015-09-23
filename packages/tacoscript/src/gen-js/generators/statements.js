@@ -18,12 +18,14 @@ export function WithStatement(node) {
 
 export function IfStatement(node) {
   this.keyword("if");
+  this.catchUpToLParen();
   this.push("(");
   this.print(node.test, node);
+  this.catchUpToRParen();
   this.push(")");
-  this.space();
 
   this.printAndIndentOnComments(node.consequent, node);
+  // this.catchUpToLBrace();
 
   if (node.alternate) {
     if (this.isLast("}")) this.space();
