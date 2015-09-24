@@ -27,5 +27,9 @@ export default function (code, opts = {}) {
     parseOpts.plugins.jsx = true;
     parseOpts.plugins.flow = true;
   }
+  // TODO: add metadata to ast to notify the tacoscript generator that
+  // whitespace has been properly attached to the AST. otherwise, don't include
+  // formatting specifiers when generating tacoscript, and use babel's generator
+  // to generate javascript.
   return babylon.parse(code, parseOpts);
 }
