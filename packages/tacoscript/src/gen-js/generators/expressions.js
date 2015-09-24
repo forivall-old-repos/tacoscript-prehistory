@@ -44,8 +44,10 @@ export function DoExpression(node, parent) {
  */
 
 export function ParenthesizedExpression(node, parent) {
+  this.catchUpToLParen();
   this.push("(");
   this.print(node.expression, node);
+  this.catchUpToRParen();
   this.push(")");
 }
 

@@ -7,21 +7,27 @@ export function ClassDeclaration(node, parent) {
   this.push("class");
 
   if (node.id) {
-    this.push(" ");
+    this.wordBoundary();
     this.print(node.id, node);
   }
 
   this.print(node.typeParameters, node);
 
   if (node.superClass) {
-    this.push(" ", "extends", " ");
+    this.catchUpToKeyword("extends");
+    this.wordBoundary();
+    this.push("extends");
+    this.wordBoundary();
     this.print(node.superClass, node);
     this.print(node.superTypeParameters, node);
   }
 
   if (node.implements) {
-    this.push(" ", "implements", " ");
-    this.printJoin(node.implements, node, { separator: ", " });
+    this.catchUpToKeyword("implements");
+    this.wordBoundary();
+    this.push("implements");
+    this.wordBoundary();
+    this.printJoin(node.implements, node, { separator: "," });
   }
 
   this.space();
@@ -39,10 +45,9 @@ export { ClassDeclaration as ClassExpression };
  */
 
 export function ClassBody(node, parent) {
-  this.push("{");
+  this.blockStart();
   if (node.body.length === 0) {
-    this.catchUpToBlockEnd();
-    this.push("}");
+    this.blockEnd();
   } else {
     this.newline();
 
@@ -50,8 +55,7 @@ export function ClassBody(node, parent) {
     this.printSequence(node.body, node);
     this.dedent();
 
-    this.catchUpToBlockEnd();
-    this.endBlock();
+    this.blockEnd();
   }
 }
 
@@ -63,13 +67,12 @@ export function ClassBody(node, parent) {
 export function ClassProperty(node, parent) {
   this.printList(node.decorators, node, { separator: "" });
 
-  if (node.static) this.push("static", " ");
+  if (node.static) { this.push("static"); this.wordBoundary(); }
   this.print(node.key, node);
   this.print(node.typeAnnotation, node);
   if (node.value) {
-    this.space();
+    this.catchUpToAssign();
     this.push("=");
-    this.space();
     this.print(node.value, node);
   }
   this.semicolon();
@@ -83,7 +86,8 @@ export function MethodDefinition(node, parent) {
   this.printList(node.decorators, node, { separator: "" });
 
   if (node.static) {
-    this.push("static", " ");
+    this.push("static");
+    this.wordBoundary();
   }
 
   this._method(node);

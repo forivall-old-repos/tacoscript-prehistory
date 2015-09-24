@@ -25,7 +25,6 @@ export function IfStatement(node) {
   this.push(")");
 
   this.printAndIndentOnComments(node.consequent, node);
-  // this.catchUpToLBrace();
 
   if (node.alternate) {
     if (this.isLast("}")) this.space();
@@ -40,6 +39,7 @@ export function IfStatement(node) {
 
 export function ForStatement(node) {
   this.keyword("for");
+  this.catchUpToLParen();
   this.push("(");
 
   this.print(node.init, node);
@@ -56,6 +56,7 @@ export function ForStatement(node) {
     this.print(node.update, node);
   }
 
+  this.catchUpToRParen();
   this.push(")");
   this.printBlock(node.body, node);
 }
@@ -66,8 +67,10 @@ export function ForStatement(node) {
 
 export function WhileStatement(node) {
   this.keyword("while");
+  this.catchUpToLParen();
   this.push("(");
   this.print(node.test, node);
+  this.catchUpToRParen();
   this.push(")");
   this.printBlock(node.body, node);
 }
@@ -80,10 +83,15 @@ export function WhileStatement(node) {
 var buildForXStatement = function (op) {
   return function (node) {
     this.keyword("for");
+    this.catchUpToLParen();
     this.push("(");
     this.print(node.left, node);
-    this.push(" ", op, " ");
+    // this.catchUpToKeyword(op);
+    this.wordBoundary();
+    this.push(op);
+    this.wordBoundary();
     this.print(node.right, node);
+    this.catchUpToRParen();
     this.push(")");
     this.printBlock(node.body, node);
   };
@@ -101,10 +109,13 @@ export var ForOfStatement = buildForXStatement("of");
  */
 
 export function DoWhileStatement(node) {
-  this.push("do", " ");
+  this.push("do");
+  this.wordBoundary();
   this.print(node.body, node);
-  this.space();
+  this.catchUpToKeyword("while");
+  this.wordBoundary();
   this.keyword("while");
+  this.catchUpToLParen();
   this.push("(");
   this.print(node.test, node);
   this.push(")", ";");
@@ -157,7 +168,7 @@ export function LabeledStatement(node) {
 export function TryStatement(node) {
   this.keyword("try");
   this.print(node.block, node);
-  this.space();
+  this.wordBoundary();
 
   // Esprima bug puts the catch clause in a `handlers` array.
   // see https://code.google.com/p/esprima/issues/detail?id=433
@@ -169,9 +180,13 @@ export function TryStatement(node) {
   }
 
   if (node.finalizer) {
-    this.space();
-    this.push("finally", " ");
+    this.catchUpToKeyword("finally");
+    this.wordBoundary();
+    this.push("finally");
+    this.wordBoundary();
+    this.catchUpToLParen();
     this.print(node.finalizer, node);
+    this.catchUpToRParen();
   }
 }
 
@@ -241,9 +256,10 @@ export function DebuggerStatement() {
  */
 
 export function VariableDeclaration(node, parent) {
-  this.push(node.kind, " ");
+  this.push(node.kind);
+  this.wordBoundary();
 
-  var sep = [",", " "];
+  var sep = ",";
   // sep = `,\n${repeating(" ", node.kind.length + 1)}`;
 
   this.printList(node.declarations, node, { separator: sep });
@@ -264,9 +280,10 @@ export function VariableDeclarator(node) {
   this.print(node.id, node);
   this.print(node.id.typeAnnotation, node);
   if (node.init) {
-    this.space();
+    this.wordBoundary();
+    this.catchUpToAssign();
     this.push("=");
-    this.space();
+    this.wordBoundary();
     this.print(node.init, node);
   }
 }

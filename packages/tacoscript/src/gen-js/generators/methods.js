@@ -36,14 +36,24 @@ export function _method(node) {
   }
 
   if (kind === "get" || kind === "set") {
-    this.push(kind, " ");
+    this.catchUpToGetSet(kind);
+    this.wordBoundary();
+    this.push(kind);
+    this.wordBoundary();
   }
 
-  if (value.async) this.push("async ");
+  if (value.async) {
+    this.catchUpToKeyword("async");
+    this.wordBoundary();
+    this.push("async");
+    this.wordBoundary();
+  }
 
   if (node.computed) {
+    this.catchUpToLBracket();
     this.push("[");
     this.print(key, node);
+    this.catchUpToRBracket();
     this.push("]");
   } else {
     this.print(key, node);

@@ -4,6 +4,7 @@
 
 export function File(node, parent) {
   this.print(node.program, node);
+  this.catchUpToEOF();
 }
 
 /**
@@ -19,13 +20,13 @@ export function Program(node, parent) {
  */
 
 export function BlockStatement(node, parent) {
-  this.push("{");
+  this.blockStart();
   if (node.body.length) {
     // this.newline();
     this.printSequence(node.body, node, { indent: true });
-    this.endBlock();
+    this.blockEnd();
   } else {
-    this.endBlock();
+    this.blockEnd();
   }
 }
 

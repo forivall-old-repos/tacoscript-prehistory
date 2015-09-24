@@ -88,35 +88,76 @@ class CodeGenerator {
     this._index = node.firstTokenIndex;
   }
 
+  catchUpToBlockStart() {
+    // catch up to this nodes first token if we're behind
+    // TODO
+    // console.log('catchup to block end');
+    this.catchUpToTokenType('{');
+  }
+
   catchUpToBlockEnd() {
     // catch up to this nodes first token if we're behind
     // TODO
     // console.log('catchup to block end');
-    this.catchUpToPunctuation('}');
+    this.catchUpToTokenType('}');
+  }
+
+  blockStart() {
+    this.catchUpToBlockStart();
+    this.push("{");
   }
 
   /**
    * Add a right brace to the buffer.
    */
 
-  endBlock() {
+  blockEnd() {
     this.catchUpToBlockEnd();
     this.push("}");
   }
 
-  catchUpToPunctuation(label) {
+  catchUpToTokenType(label) {
     let token, i;
     for (i = this._index; (token = this.tokens[i]) && token.type.label !== label; i++) {
       if (includes(['Whitespace', 'CommentLine', 'CommentBlock'], token.type)) {
-        console.log('catchup', i, token.type.label);
+        // console.log('catchup', i, token.type.label);
         this._push(token);
       }
     }
     this._index = i + 1;
   }
-  catchUpToLParen() { this.catchUpToPunctuation('('); }
-  catchUpToRParen() { this.catchUpToPunctuation(')'); }
-  catchUpToLBrace() { this.catchUpToPunctuation('{'); }
+  catchUpToTokenValue(name) {
+    let token, i;
+    for (i = this._index; (token = this.tokens[i]) && token.value !== name; i++) {
+      if (includes(['Whitespace', 'CommentLine', 'CommentBlock'], token.type)) {
+        // console.log('catchup', i, token.type.label);
+        this._push(token);
+      }
+    }
+    this._index = i + 1;
+  }
+  catchUpToLParen() { this.catchUpToTokenType('('); }
+  catchUpToGetSet(keyword) { this.catchUpToTokenValue(keyword); }
+  catchUpToRParen() { this.catchUpToTokenType(')'); }
+  catchUpToObjStart() { this.catchUpToTokenType('{'); }
+  catchUpToObjEnd() { this.catchUpToTokenType('}'); }
+  catchUpToLBracket() { this.catchUpToTokenType('['); }
+  catchUpToRBracket() { this.catchUpToTokenType(']'); }
+  catchUpToAssign() { this.catchUpToTokenType('='); }
+  catchUpToColon() { this.catchUpToTokenType(':'); }
+  catchUpToKeyword(keyword) { this.catchUpToTokenType(keyword); }
+
+  catchUpToEOF() {
+    let token, i, len;
+    for (i = this._index, len = this.tokens.length; i < len; i++) {
+      token = this.tokens[i];
+      if (includes(['Whitespace', 'CommentLine', 'CommentBlock'], token.type)) {
+        // console.log('catchup', i, token.type.label);
+        this._push(token);
+      }
+    }
+    this._index = len;
+  }
 
   /**
    * Print (Tokenize) a plain node.
@@ -172,7 +213,10 @@ class CodeGenerator {
 
         if (opts.separator && i < len - 1) {
           if (separatorIsArray) {
-            this.push(...opts.separator);
+            for (let separatorToken of (opts.separator: Array)) {
+              console.log(separatorToken);
+              this.push(separatorToken);
+            }
           } else {
             this.push(opts.separator);
           }

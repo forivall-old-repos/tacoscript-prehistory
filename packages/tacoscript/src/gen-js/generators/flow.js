@@ -144,8 +144,10 @@ export function _interfaceish(node) {
   this.print(node.id, node);
   this.print(node.typeParameters, node);
   if (node.extends.length) {
-    this.push(" extends ");
-    this.printJoin(node.extends, node, { separator: ", " });
+    this.wordBoundary();
+    this.push("extends");
+    this.wordBoundary();
+    this.printJoin(node.extends, node, { separator: "," });
   }
   this.space();
   this.print(node.body, node);
@@ -156,7 +158,8 @@ export function _interfaceish(node) {
  */
 
 export function InterfaceDeclaration(node, parent) {
-  this.push("interface ");
+  this.push("interface");
+  this.wordBoundary();
   this._interfaceish(node);
 }
 
@@ -165,7 +168,7 @@ export function InterfaceDeclaration(node, parent) {
  */
 
 export function IntersectionTypeAnnotation(node, parent) {
-  this.printJoin(node.types, node, { separator: " & " });
+  this.printJoin(node.types, node, { separator: "&" });
 }
 
 /**
@@ -221,7 +224,7 @@ export function StringTypeAnnotation() {
 
 export function TupleTypeAnnotation(node, parent) {
   this.push("[");
-  this.printJoin(node.types, node, { separator: ", " });
+  this.printJoin(node.types, node, { separator: "," });
   this.push("]");
 }
 
@@ -230,7 +233,8 @@ export function TupleTypeAnnotation(node, parent) {
  */
 
 export function TypeofTypeAnnotation(node, parent) {
-  this.push("typeof ");
+  this.push("typeof");
+  this.wordBoundary();
   this.print(node.argument, node);
 }
 
@@ -239,7 +243,8 @@ export function TypeofTypeAnnotation(node, parent) {
  */
 
 export function TypeAlias(node, parent) {
-  this.push("type ");
+  this.push("type");
+  this.wordBoundary();
   this.print(node.id, node);
   this.print(node.typeParameters, node);
   this.space();
@@ -267,7 +272,7 @@ export function TypeAnnotation(node, parent) {
 export function TypeParameterInstantiation(node, parent) {
   this.push("<");
   this.printJoin(node.params, node, {
-    separator: ", ",
+    separator: ",",
     iterator: (node) => {
       this.print(node.typeAnnotation, node);
     }
@@ -314,7 +319,7 @@ export function ObjectTypeAnnotation(node, parent) {
  */
 
 export function ObjectTypeCallProperty(node, parent) {
-  if (node.static) this.push("static ");
+  if (node.static) { this.push("static"); this.wordBoundary(); }
   this.print(node.value, node);
 }
 
@@ -323,7 +328,7 @@ export function ObjectTypeCallProperty(node, parent) {
  */
 
 export function ObjectTypeIndexer(node, parent) {
-  if (node.static) this.push("static ");
+  if (node.static) { this.push("static"); this.wordBoundary(); }
   this.push("[");
   this.print(node.id, node);
   this.push(":");
@@ -340,7 +345,7 @@ export function ObjectTypeIndexer(node, parent) {
  */
 
 export function ObjectTypeProperty(node, parent) {
-  if (node.static) this.push("static ");
+  if (node.static) { this.push("static"); this.wordBoundary(); }
   this.print(node.key, node);
   if (node.optional) this.push("?");
   if (!t.isFunctionTypeAnnotation(node.value)) {

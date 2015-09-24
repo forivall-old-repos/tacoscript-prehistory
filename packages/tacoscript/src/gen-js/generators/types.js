@@ -33,14 +33,14 @@ export { RestElement as SpreadElement, RestElement as SpreadProperty };
 export function ObjectExpression(node) {
   var props = node.properties;
 
+  this.catchUpToObjStart();
   this.push("{");
 
   if (props.length) {
-    this.space();
     this.printList(props, node, { indent: true });
-    this.space();
   }
 
+  this.catchUpToObjEnd();
   this.push("}");
 }
 
@@ -61,8 +61,10 @@ export function Property(node) {
     this._method(node);
   } else {
     if (node.computed) {
+      this.catchUpToLBracket();
       this.push("[");
       this.print(node.key, node);
+      this.catchUpToRBracket();
       this.push("]");
     } else {
       // print `({ foo: foo = 5 } = {})` as `({ foo = 5 } = {});`
@@ -82,8 +84,8 @@ export function Property(node) {
       }
     }
 
+    this.catchUpToColon();
     this.push(":");
-    this.space();
     this.print(node.value, node);
   }
 }
