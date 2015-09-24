@@ -4,11 +4,8 @@ import * as bt from "babel-core/lib/types";
 import compact from "lodash/array/compact";
 import flatten from "lodash/array/flatten";
 
-import { TokenType, types as tt } from "babylon/lib/tokenizer/types";
-import { TokContext, types as tc } from "babylon/lib/tokenizer/context";
 import Parser from "babylon/lib/parser";
-import { isIdentifierChar, isIdentifierStart } from "babylon/lib/util/identifier";
-import { lineBreak, lineBreakG, isNewLine, nonASCIIwhitespace } from "babylon/lib/util/whitespace";
+import { nonASCIIwhitespace } from "babylon/lib/util/whitespace";
 import functionHash from "../../helpers/function-hash";
 import TokenizerState from "babylon/lib/tokenizer/state";
 import { Token } from "babylon/lib/tokenizer";
@@ -19,7 +16,7 @@ pp.startWhitespace = function() {
   this.whitespaceState.start = this.state.pos;
   this.whitespaceState.startLoc = this.state.curPosition();
   this.whitespaceState.value = '';
-}
+};
 
 pp.finishWhitespace = function() {
   this.whitespaceState.end = this.state.pos;
@@ -27,7 +24,7 @@ pp.finishWhitespace = function() {
   if (this.whitespaceState.end > this.whitespaceState.start) {
     this.state.tokens.push(new Token(this.whitespaceState));
   }
-}
+};
 
 export default function(instance) {
   instance.state.tokenAttachmentStack = [];
@@ -103,7 +100,7 @@ export default function(instance) {
             }
         }
       }
-    }
+    };
   });
 
   instance.extend("startNode", function(inner) {
@@ -133,8 +130,8 @@ export default function(instance) {
   }
 
   instance.extend("finishNode", function(inner) {
-    return function(node, type) {
-      var node = inner.call(this, node, type);
+    return function(origNode, type) {
+      var node = inner.call(this, origNode, type);
 
       node.tokenEnd = this.state.tokens.length;
       node.tokens = this.state.tokens.slice(node.tokenStart);
@@ -145,8 +142,8 @@ export default function(instance) {
   });
 
   instance.extend("finishNodeAt", function(inner) {
-    return function(node, type, pos, loc) {
-      var node = inner.call(this, node, type, pos, loc);
+    return function(origNode, type, pos, loc) {
+      var node = inner.call(this, origNode, type, pos, loc);
 
       let tokens = this.state.tokens, i;
       for (i = tokens.length - 1; i > 0; i--) { if (tokens[i].end <= pos) { break; } }
