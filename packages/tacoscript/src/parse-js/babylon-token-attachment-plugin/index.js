@@ -27,7 +27,6 @@ pp.finishWhitespace = function() {
 };
 
 export default function(instance) {
-  instance.state.tokenAttachmentStack = [];
   instance.whitespaceState = new TokenizerState();
   instance.whitespaceState.init({}, instance.state.input);
   instance.whitespaceState.type = "Whitespace";
@@ -39,9 +38,6 @@ export default function(instance) {
   });
 
   instance.extend("skipSpace", function(inner) {
-    // return function() {
-    //   return inner.call(this);
-    // };
     if (functionHash(inner) !== '0aae7bd722190ba61b58881b6858e0cb') {
       console.error('Warning: whitespace will not be preserved. Please report this as an issue.');
       return inner;
