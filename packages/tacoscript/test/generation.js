@@ -1,12 +1,12 @@
 var genJs = require("../lib/gen-js");
 // var genTaco = require("../lib/gen-taco");
 var assert   = require("assert");
-var helper   = require("./_helper");
 var parseJs  = require("../lib/parse-js");
 // var horchata = require("horchata");
 var chai     = require("chai");
 var t        = require("../lib/types");
 var _        = require("lodash");
+var mochaFixtures = require('mocha-fixtures-generic');
 
 // suite("generation", function () {
 //   test("completeness", function () {
@@ -21,7 +21,17 @@ var _        = require("lodash");
 //   });
 // });
 
-_.each(helper.get("generation"), function (testSuite) {
+var noop = function() {};
+var fixtures = mochaFixtures(__dirname + "/fixtures", {
+  fixtures: {
+    "js": { loc: ["code.js"] },
+    "taco": { loc: ["code.taco"] }
+  },
+  skip: noop,
+  getTaskOptions: noop
+})
+
+_.each(fixtures.generation, function (testSuite) {
   suite("generation-js-circular/" + testSuite.title, function () {
     _.each(testSuite.tests, function (task) {
       test(task.title, !task.disabled && function () {
@@ -40,7 +50,7 @@ _.each(helper.get("generation"), function (testSuite) {
           }
         });
 
-        var actualJsCode = genJs(actualAst, task.options, task.taco.code).code;
+        var actualJsCode = genJs(actualAst, task.options, task.js.code).code;
         chai.expect(actualJsCode).to.equal(task.js.code, task.js.loc + " (generated) !== " + task.js.loc);
       });
     });

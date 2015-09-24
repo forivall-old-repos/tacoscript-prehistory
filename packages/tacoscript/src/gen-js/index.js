@@ -74,14 +74,14 @@ class CodeGenerator {
   catchUp(node) {
     // catch up to this nodes first token if we're behind
     // TODO
-    for (let i = this._index; i < node.firstTokenIndex; i++) {
+    for (let i = this._index; i < node.tokenStart; i++) {
       let token = this.tokens[i];
       if (includes(['Whitespace', 'CommentLine', 'CommentBlock'], token.type)) {
         // console.log('catchup', i);
         this._push(token);
       }
     }
-    this._index = node.firstTokenIndex;
+    this._index = node.tokenStart;
   }
 
   catchUpToBlockEnd() {

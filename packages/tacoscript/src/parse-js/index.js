@@ -1,6 +1,10 @@
 import * as babylon from "babylon";
 import attachTokens from "./attach-tokens";
 
+import { plugins as babylonPlugins } from "babylon/lib/parser";
+import tokenAttachmentPlugin from "./babylon-token-attachment-plugin";
+babylonPlugins.tokenAttachment = tokenAttachmentPlugin;
+
 /**
  * Parse `code` with normalized options, collecting tokens and comments.
  */
@@ -18,10 +22,11 @@ export default function (code, opts = {}) {
     plugins:                     opts.plugins || {},
     ranges:                      true
   };
+  parseOpts.plugins.tokenAttachment = true;
 
   if (opts.nonStandard) {
     parseOpts.plugins.jsx = true;
     parseOpts.plugins.flow = true;
   }
-  return attachTokens(babylon.parse(code, parseOpts), code, {whitespace: true});
+  return babylon.parse(code, parseOpts);
 }
