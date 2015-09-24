@@ -10,7 +10,14 @@ import functionHash from "../../helpers/function-hash";
 import TokenizerState from "babylon/lib/tokenizer/state";
 import { Token } from "babylon/lib/tokenizer";
 
+
 var pp = Parser.prototype;
+
+// Reads inline JSX contents token.
+
+// pp.asdfasdf =
+
+
 
 pp.startWhitespace = function() {
   this.whitespaceState.start = this.state.pos;
@@ -26,18 +33,40 @@ pp.finishWhitespace = function() {
   }
 };
 
+pp.tokenAttachStartNode = function(node) {
+}
+
+pp.attachLeadingTokens = function() {
+  this.lastTokenAttach
+}
+
 export default function(instance) {
+  instance.state.tokenAttachmentStack = [];
+  instance.state.lastTokenAttach = -1;
   instance.whitespaceState = new TokenizerState();
   instance.whitespaceState.init({}, instance.state.input);
   instance.whitespaceState.type = "Whitespace";
 
   instance.extend("eat", function(inner) {
     return function(type) {
+      console.log('eat');
       return inner.call(this, type);
     };
   });
 
+  instance.extend("next", function(inner) {
+    return function() {
+      console.log('next');
+      var ret = inner.call(this);
+      this.state.tokenAttachStart = this.state.tokens.length;
+      return ret;
+    };
+  });
+
   instance.extend("skipSpace", function(inner) {
+    // return function() {
+    //   return inner.call(this);
+    // };
     if (functionHash(inner) !== '0aae7bd722190ba61b58881b6858e0cb') {
       console.error('Warning: whitespace will not be preserved. Please report this as an issue.');
       return inner;
