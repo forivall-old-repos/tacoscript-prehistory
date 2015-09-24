@@ -1,5 +1,4 @@
 import * as babylon from "babylon";
-import attachTokens from "./attach-tokens";
 
 import { plugins as babylonPlugins } from "babylon/lib/parser";
 import tokenAttachmentPlugin from "./babylon-token-attachment-plugin";
