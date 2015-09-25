@@ -1,0 +1,6 @@
+{
+  "features": {
+    "classProperties": true,
+    "decorators": true
+  }
+}

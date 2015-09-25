@@ -1,0 +1,6 @@
+{
+  "features": {
+    "trailingFunctionCommas": true
+  },
+  "throws": "Unexpected token (1:7)"
+}

@@ -1,0 +1,6 @@
+{
+  "features": {
+    "asyncFunctions": true
+  },
+  "throws": "Unexpected token (2:4)"
+}
