@@ -1,4 +1,4 @@
-var getFixtures = require("mocha-fixtures");
+var getFixtures = require("mocha-fixtures-generic");
 var parse       = require("../lib").parse;
 var _           = require("lodash");
 
