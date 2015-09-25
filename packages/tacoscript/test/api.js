@@ -1,11 +1,15 @@
+/**
+ * Test the node-based API
+ *
+ * TODO: currently, this is unadapted from babel's test suite. Once ready,
+ * tacoscript's API should pass these tests.
+ */
+
 require("../lib/api/node");
 
-var PluginManager        = require("../lib/transformation/file/plugin-manager");
-var Transformer          = require("../lib/transformation/transformer");
-var transform            = require("../lib/transformation");
-var Pipeline             = require("../lib/transformation/pipeline");
+var translate            = require("../lib/translateation");
 var assert               = require("assert");
-var File                 = require("../lib/transformation/file");
+var File                 = require("../lib/translateation/file");
 
 function assertIgnored(result) {
   assert.ok(result.ignored);
@@ -16,40 +20,40 @@ function assertNotIgnored(result) {
 }
 
 // shim
-function transformAsync(code, opts) {
+function translateAsync(code, opts) {
   return {
     then: function (resolve) {
-      resolve(transform(code, opts));
+      resolve(translate(code, opts));
     }
   };
 }
 
 suite("api", function () {
   test("code option false", function () {
-    return transformAsync("foo('bar');", { code: false }).then(function (result) {
+    return translateAsync("foo('bar');", { code: false }).then(function (result) {
       assert.ok(!result.code);
     });
   });
 
   test("ast option false", function () {
-    return transformAsync("foo('bar');", { ast: false }).then(function (result) {
+    return translateAsync("foo('bar');", { ast: false }).then(function (result) {
       assert.ok(!result.ast);
     });
   });
 
   test("ignore option", function () {
     return Promise.all([
-      transformAsync("", {
+      translateAsync("", {
         ignore: "node_modules",
         filename: "/foo/node_modules/bar"
       }).then(assertIgnored),
 
-      transformAsync("", {
+      translateAsync("", {
         ignore: "foo/node_modules",
         filename: "/foo/node_modules/bar"
       }).then(assertIgnored),
 
-      transformAsync("", {
+      translateAsync("", {
         ignore: "foo/node_modules/*.bar",
         filename: "/foo/node_modules/foo.bar"
       }).then(assertIgnored)
@@ -58,50 +62,43 @@ suite("api", function () {
 
   test("only option", function () {
     return Promise.all([
-      transformAsync("", {
+      translateAsync("", {
         only: "node_modules",
         filename: "/foo/node_modules/bar"
       }).then(assertNotIgnored),
 
-      transformAsync("", {
+      translateAsync("", {
         only: "foo/node_modules",
         filename: "/foo/node_modules/bar"
       }).then(assertNotIgnored),
 
-      transformAsync("", {
+      translateAsync("", {
         only: "foo/node_modules/*.bar",
         filename: "/foo/node_modules/foo.bar"
       }).then(assertNotIgnored),
 
-      transformAsync("", {
+      translateAsync("", {
         only: "node_modules",
         filename: "/foo/node_module/bar"
       }).then(assertIgnored),
 
-      transformAsync("", {
+      translateAsync("", {
         only: "foo/node_modules",
         filename: "/bar/node_modules/foo"
       }).then(assertIgnored),
 
-      transformAsync("", {
+      translateAsync("", {
         only: "foo/node_modules/*.bar",
         filename: "/foo/node_modules/bar.foo"
       }).then(assertIgnored)
     ])
   });
 
-  test("addHelper unknown", function () {
-    var file = new File({}, transform.pipeline);
-    assert.throws(function () {
-      file.addHelper("foob");
-    }, /Unknown helper foob/);
-  });
-
   test("resolveModuleSource option", function () {
     var actual = 'import foo from "foo-import-default";\nimport "foo-import-bare";\nexport { foo } from "foo-export-named";';
     var expected = 'import foo from "resolved/foo-import-default";\nimport "resolved/foo-import-bare";\nexport { foo } from "resolved/foo-export-named";';
 
-    return transformAsync(actual, {
+    return translateAsync(actual, {
       blacklist: [], // TODO: test blacklist
       resolveModuleSource: function (originalSource) {
         return "resolved/" + originalSource;
@@ -112,47 +109,12 @@ suite("api", function () {
   });
 
   test("extra options", function () {
-    var file1 = new File({ extra: { foo: "bar" } }, transform.pipeline);
+    var file1 = new File({ extra: { foo: "bar" } });
     assert.equal(file1.opts.extra.foo, "bar");
 
-    var file2 = new File({}, transform.pipeline);
-    var file3 = new File({}, transform.pipeline);
+    var file2 = new File({});
+    var file3 = new File({});
     assert.ok(file2.opts.extra !== file3.opts.extra);
   });
 
-  suite("plugins", function () {
-    test("unknown plugin", function () {
-      assert.throws(function () {
-        new PluginManager().subnormaliseString("foo bar");
-      }, /Unknown plugin/);
-    });
-
-    test("key collision", function () {
-      assert.throws(function () {
-        new PluginManager({
-          transformers: { "es6.arrowFunctions": true }
-        }).validate("foobar", { key: "es6.arrowFunctions" });
-      }, /collides with another/);
-    });
-
-    test("not transformer", function () {
-      assert.throws(function () {
-        new PluginManager().validate("foobar", {});
-      }, /didn't export a Plugin instance/);
-
-      assert.throws(function () {
-        new PluginManager().validate("foobar", "");
-      }, /didn't export a Plugin instance/);
-
-      assert.throws(function () {
-        new PluginManager().validate("foobar", []);
-      }, /didn't export a Plugin instance/);
-    });
-
-    test("object request");
-
-    test("string request");
-
-    test("transformer request");
-  });
 });

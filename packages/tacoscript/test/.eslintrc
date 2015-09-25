@@ -20,7 +20,9 @@
     "no-unreachable": 0,
     "no-labels": 0,
     "no-process-exit": 0,
-    "camelcase": 0
+    "camelcase": 0,
+    "quotes": 0,
+    "no-path-concat": 0
   },
   "env": {
     "node": true,

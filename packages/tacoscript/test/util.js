@@ -1,6 +1,9 @@
+/** TODO: move these helpers and tests to external modules, after babel 6.0 is
+ *  released
+ */
+
 var assert = require("assert");
 var util   = require("../lib/util");
-var parse  = require("../lib/parse-js");
 var t      = require("../lib/types");
 
 suite("util", function () {
