@@ -23,12 +23,12 @@ export function IfStatement(node) {
   this.push(")");
   this.space();
 
-  this.printAndIndentOnComments(node.consequent, node);
+  this.print(node.consequent, node);
 
   if (node.alternate) {
     if (this.isLast("}")) this.space();
     this.push("else", " ");
-    this.printAndIndentOnComments(node.alternate, node);
+    this.print(node.alternate, node);
   }
 }
 

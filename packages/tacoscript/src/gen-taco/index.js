@@ -1,5 +1,5 @@
 import repeating from "repeating";
-import TokenBuffer from "./token-buffer";
+import TokenBuffer from "./token/buffer";
 import extend from "lodash/object/extend";
 import each from "lodash/collection/each";
 import n from "./node";

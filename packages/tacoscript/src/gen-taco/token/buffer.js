@@ -4,9 +4,10 @@ import isNumber from "lodash/lang/isNumber";
 import isArray from "lodash/lang/isArray";
 import isString from "lodash/lang/isString";
 
-import getToken from "../helpers/get-token";
+import getToken from "../../helpers/get-token";
 import { Token } from "horchata/lib/tokenizer";
-import { types as tt } from "horchata/lib/tokenizer/types";
+import { types as tt, TokenType } from "horchata/lib/tokenizer/types";
+import { wb } from "./types";
 
 /**
  * Buffer for collecting generated output.
@@ -208,6 +209,8 @@ export default class TokenBuffer {
       let s = getToken(token, options);
       token = new Token(s);
       token.raw = s.raw;
+    } else if (token instanceof TokenType) {
+      token = new Token({ type: token });
     }
 
     // see startTerminatorless() instance method
@@ -290,6 +293,8 @@ export default class TokenBuffer {
         buf += (token.value);
       } else if (includes(tokenSerializationTypes.raw, token.type.label)) {
         buf += (token.raw);
+      } else if (token.type === wb) {
+        // TODO: ensure word boundary
       } else {
         console.log(token);
       }
