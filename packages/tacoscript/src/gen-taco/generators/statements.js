@@ -1,5 +1,5 @@
 import * as t from "../../types";
-import { types as tt } from "babylon/lib/tokenizer/types";
+import { types as tt } from "horchata/lib/tokenizer/types";
 import { wb, sp, fsp, tab, nl } from "../token/types";
 
 /**

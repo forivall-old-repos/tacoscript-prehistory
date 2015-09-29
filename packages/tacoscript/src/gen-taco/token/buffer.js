@@ -336,6 +336,11 @@ export default class TokenBuffer {
       } else if (token.type === "Whitespace") {
         buf += token.value;
         // TODO: comments
+      // } else if (token.type === "CommentBlock") {
+      //   // TODO: reindent comment body in block. parser should
+      //   //       emit each line as a separate token, so that push will insert a tab ahead of it.
+      //   // TODO: fully tokenize comments when parsing in horchata
+
       } else if (includes(tokenSerializationTypes.label, token.type.label)) {
         buf += (token.type.label);
       } else if (includes(tokenSerializationTypes.value, token.type.label)) {
@@ -364,7 +369,7 @@ const labelTokens = [
   'bracketL', 'bracketR', 'braceL', 'braceR', 'parenL', 'parenR',
   'comma', 'semi', 'colon', 'doubleColon', 'dot', 'question', 'arrow',
   'ellipsis', 'backQuote', 'dollarBraceL', 'at',
-  'unboundArrow'
+  'unboundArrow', 'blockCommentStart', 'lineCommentStart', 'blockCommentEnd'
 ];
 const valueTokens = [
   'name', 'template', 'eq', 'assign', 'incDec', 'prefix',
@@ -377,7 +382,8 @@ const valueTokens = [
   '_switch', '_throw', '_try', '_var', '_let', '_const', '_while',
   '_with', '_new', '_this', '_super', '_class', '_extends', '_export',
   '_import', '_yield', '_null', '_true', '_false', '_in', '_instanceof',
-  '_typeof', '_void', '_delete'
+  '_typeof', '_void', '_delete',
+  'commentBody'
 ];
 const rawTokens = ['num', 'regexp', 'string'];
 const specialTokens = ['eof'];

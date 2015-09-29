@@ -31,13 +31,17 @@ export class TokenType {
     this.postfix = !!conf.postfix;
     this.binop = conf.binop || null;
     this.updateContext = null;
+    this.isComment = !!conf.isComment;
+    // TODO: choose a better name
+    this.mightNotBeLoop = !!conf.mightNotBeLoop;
   }
 }
 
 function binop(name, prec) {
   return new TokenType(name, {beforeExpr: true, binop: prec});
 }
-const beforeExpr = {beforeExpr: true}, startsExpr = {startsExpr: true};
+const beforeExpr = {beforeExpr: true}, startsExpr = {startsExpr: true},
+      isComment = {isComment: true};
 
 export const types = {
   num: new TokenType("num", startsExpr),
@@ -97,7 +101,12 @@ export const types = {
   modulo: binop("%", 10),
   star: binop("*", 10),
   slash: binop("/", 10),
-  exponent: new TokenType("**", {beforeExpr: true, binop: 11, rightAssociative: true})
+  exponent: new TokenType("**", {beforeExpr: true, binop: 11, rightAssociative: true}),
+
+  blockCommentStart: new TokenType("#*", isComment),
+  lineCommentStart: new TokenType("#", isComment),
+  commentBody: new TokenType("comment", isComment),
+  blockCommentEnd: new TokenType("*#", isComment),
 };
 
 // Map keyword names to token types.
@@ -116,7 +125,7 @@ kw("catch", startsExpr);
 kw("continue");
 kw("debugger");
 kw("default", beforeExpr);
-kw("do", {isLoop: true, startsExpr: true});
+kw("do", {isLoop: true, startsExpr: true, mightNotBeLoop: true});
 kw("else", beforeExpr);
 kw("finally");
 kw("for", {isLoop: true});

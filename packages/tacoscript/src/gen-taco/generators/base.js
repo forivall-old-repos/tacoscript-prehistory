@@ -1,3 +1,5 @@
+import { Token } from "horchata/lib/tokenizer";
+import { types as tt } from "horchata/lib/tokenizer/types";
 /**
  * Print File.program
  */
@@ -19,6 +21,9 @@ export function Program(node, parent) {
  */
 
 export function BlockStatement(node, parent) {
+  if (parent.type === 'Program') { // Probably also block; tests should reveal others
+    this.push(new Token({type: tt._do, value: 'do'}));
+  }
   if (node.body.length) {
     this.newline();
     this.printSequence(node.body, node, { indent: true });

@@ -5,8 +5,9 @@ import extend from "lodash/object/extend";
 import each from "lodash/collection/each";
 import n from "./node";
 import * as t from "../types";
-import { types as tt } from "babylon/lib/tokenizer/types";
+import { types as tt } from "horchata/lib/tokenizer/types";
 import { wb, sp, fsp, tab, nl } from "./token/types";
+import { Token } from "horchata/lib/tokenizer";
 
 import isArray from "lodash/lang/isArray";
 import includes from "lodash/collection/includes";
@@ -19,12 +20,10 @@ class CodeGenerator {
   constructor(ast, opts, code) {
     opts = opts || {};
     if (!opts.indent) {
-      opts.indent = detectIndent(code);
-      if (!opts.indent.type) {
-        opts.indent = {amount: 2, type: 'space', indent: '  '};
-      }
+      opts.indent = CodeGenerator.detectIndent(code);
     }
 
+    this._code = code;
     this.comments = ast.comments || [];
     this.tokens   = ast.tokens || [];
     this.opts     = opts;
@@ -53,6 +52,14 @@ class CodeGenerator {
     jsx:              require("./generators/jsx")
   };
 
+  static detectIndent(code) {
+    let indent = detectIndent(code);
+    if (!indent.type || indent.amount === 1 && indent.type === 'space') {
+      indent = {amount: 2, type: 'space', indent: '  '};
+    }
+    return indent;
+  }
+
   /**
    * Generate code and formatting directives from ast. Also returns tokenization
    * of tacoscript code.
@@ -79,12 +86,24 @@ class CodeGenerator {
   catchUp(node) {
     // catch up to this nodes first token if we're behind
     // TODO
-    for (let i = this._index; i < node.tokenStart; i++) {
+    let stop = node == null ? this.tokens.length : node.tokenStart;
+    for (let i = this._index; i < stop; i++) {
       let token = this.tokens[i];
       // TODO: also catchup 'Whitespace', and handle indentation etc. appropriately
-      if (includes(['CommentLine', 'CommentBlock'], token.type)) {
-        // console.log('catchup', i);
-        this._push(token);
+      if (token.type === 'CommentBlock') {
+        this._push(tt.blockCommentStart);
+        this._push(new Token({type: tt.commentBody, value: token.value}));
+        this._push(tt.blockCommentEnd);
+        this._push(nl);
+      } else if (token.type === 'CommentLine') {
+        let raw = this._code.slice(token.start, token.end);
+        if (raw.startsWith('<!--')) {
+          this._push(token);
+        } else {
+          this._push(tt.lineCommentStart);
+          this._push(new Token({type: tt.commentBody, value: token.value}));
+        }
+        this._push(nl);
       }
     }
     this._index = node.tokenStart;
