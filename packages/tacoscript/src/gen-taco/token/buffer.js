@@ -3,11 +3,13 @@ import includes from "lodash/collection/includes";
 import isNumber from "lodash/lang/isNumber";
 import isArray from "lodash/lang/isArray";
 import isString from "lodash/lang/isString";
+import repeating from "repeating";
 
 import getToken from "../../helpers/get-token";
 import { Token } from "horchata/lib/tokenizer";
 import { types as tt, TokenType } from "horchata/lib/tokenizer/types";
-import { wb } from "./types";
+import { wb, sp, fsp, tab, nl } from "./types";
+import { wordTokenTypes } from "./whitespace";
 
 /**
  * Buffer for collecting generated output.
@@ -26,17 +28,17 @@ export default class TokenBuffer {
    * Get the buffer of tokens as a string.
    */
 
-  get() {
-    this._serializeTokens();
+  get(opts) {
+    this._serializeTokens(opts);
     return this._buf;
   }
 
   indent() {
-    // console.log('indent');
+    this._indent++;
   }
 
   dedent() {
-    // console.log('dedent');
+    this._indent--;
   }
 
   /**
@@ -45,8 +47,7 @@ export default class TokenBuffer {
    */
 
   terminateLine() {
-    // TODO
-    this.push("\n");
+    this.push(nl);
   }
 
   /**
@@ -71,8 +72,10 @@ export default class TokenBuffer {
    */
 
   space(force) {
-    if (force || this.tokens.length && !this.isLast(" ") && !this.isLast("\n")) {
-      this.push(" ");
+    if (force) {
+      this.push(fsp);
+    } else if (this.tokens.length && !this.isLastTok(sp) && !this.isLastTok(nl)) {
+      this.push(sp);
     }
   }
 
@@ -85,6 +88,16 @@ export default class TokenBuffer {
 
     this.tokens.pop();
     this.position.unshift(cha);
+  }
+
+  /**
+   * Remove the last token.
+   */
+  removeLastTok(tokType) {
+    if (!this.isLast(tokType)) return;
+
+    let tok = this.tokens.pop();
+    this.position.unshift(tok);
   }
 
   /**
@@ -155,14 +168,18 @@ export default class TokenBuffer {
 
   _newline(removeLast) {
     // never allow more than two lines
-    if (this.endsWith("\n\n")) return;
+    // if (this.endsWith("\n\n")) return;
+    let tokensLen = this.tokens.length;
+    if (this.tokens.length >= 2 && this.tokens[tokensLen - 2].type === nl && this.tokens[tokensLen].type === nl) {
+      return;
+    }
 
     // remove the last newline
-    if (removeLast && this.isLast("\n")) this.removeLast("\n");
+    if (removeLast && this.isLastTok(nl)) this.removeLastTok(nl);
 
-    this.removeLast(" ");
+    this.removeLastTok(sp);
     this._removeSpacesAfterLastNewline();
-    this._push("\n");
+    this._push(nl);
   }
 
   /**
@@ -190,7 +207,7 @@ export default class TokenBuffer {
   }
 
   /**
-   * Push a string token(s) to the buffer, maintaining indentation and newlines.
+   * Push token(s) to the buffer, maintaining indentation.
    */
 
   push(..._tokens) {
@@ -205,11 +222,15 @@ export default class TokenBuffer {
    */
 
   _push(token, options = {}) {
+    if (this.isLastTok(nl)) {
+      this.tokens.push(new Token({ type: tab, value: this._indent }));
+    }
     if (isString(token)) {
       let s = getToken(token, options);
       token = new Token(s);
       token.raw = s.raw;
-    } else if (token instanceof TokenType) {
+    // } else if (token instanceof TokenType) {
+    } else if (!token.type) { // duck type instead
       token = new Token({ type: token });
     }
 
@@ -260,8 +281,19 @@ export default class TokenBuffer {
    */
 
   isLast(cha) {
+    if (this.tokens.length === 0) { return false; }
     return this.matches(this.tokens[this.tokens.length - 1], cha);
   }
+
+  /**
+   * Test if a character is last in the buffer.
+   */
+
+  isLastTok(tokType) {
+    if (this.tokens.length === 0) { return false; }
+    return this.matchesTok(this.tokens[this.tokens.length - 1], tokType);
+  }
+
 
   matches(token, cha) {
     var ctok;
@@ -279,9 +311,26 @@ export default class TokenBuffer {
     }
   }
 
-  _serializeTokens() {
+  matchesTok(token, type) {
+    if (Array.isArray(type)) {
+      for (let oneType in (type: Array)) {
+        if (token.type === oneType) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return token.type === type;
+  }
+
+  // TODO: move serialization to a separate file / class
+  _serializeTokens(opts) {
     let buf = "";
+    let prevToken = null;
     for (let token of (this.tokens: Array)) {
+      if (prevToken && includes(wordTokenTypes, prevToken.type) && includes(wordTokenTypes, token.type)) {
+        buf += ' ';
+      }
       if (token.start != null && token.end != null) {
         buf += (this.code.slice(token.start, token.end));
       } else if (token.type === "Whitespace") {
@@ -293,11 +342,19 @@ export default class TokenBuffer {
         buf += (token.value);
       } else if (includes(tokenSerializationTypes.raw, token.type.label)) {
         buf += (token.raw);
-      } else if (token.type === wb) {
-        // TODO: ensure word boundary
+      } else if (token.type === nl) {
+        buf += "\n"; // TODO: platform specific
+      } else if (token.type === tab) {
+        buf += repeating(opts.indent.indent, token.value);
+      } else if (token.type === sp) {
+        // TODO: only insert space if not preserving space
+        buf += ' ';
+      } else if (token.type === fsp) {
+        buf += ' ';
       } else {
         console.log(token);
       }
+      prevToken = token;
     }
     this._buf = buf;
   }
@@ -306,7 +363,8 @@ export default class TokenBuffer {
 const labelTokens = [
   'bracketL', 'bracketR', 'braceL', 'braceR', 'parenL', 'parenR',
   'comma', 'semi', 'colon', 'doubleColon', 'dot', 'question', 'arrow',
-  'ellipsis', 'backQuote', 'dollarBraceL', 'at'
+  'ellipsis', 'backQuote', 'dollarBraceL', 'at',
+  'unboundArrow'
 ];
 const valueTokens = [
   'name', 'template', 'eq', 'assign', 'incDec', 'prefix',

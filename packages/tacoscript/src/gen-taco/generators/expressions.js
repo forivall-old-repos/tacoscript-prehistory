@@ -138,7 +138,7 @@ export function CallExpression(node, parent) {
 
   var separator;
   if (isPrettyCall) {
-    separator = ",\n";
+    separator = [tt.comma, nl];
     this.newline();
     this.indent();
   }

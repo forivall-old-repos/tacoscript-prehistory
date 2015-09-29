@@ -1,4 +1,5 @@
 import * as t from "../../types";
+import { wb, sp, tab, nl } from "../token/types";
 
 /**
  * Prints nodes with params, prints typeParameters, params, and returnType, handles optional params.
@@ -39,7 +40,7 @@ export function _method(node) {
     this.push(kind, " ");
   }
 
-  if (value.async) this.push("async ");
+  if (value.async) this.push("async");
 
   if (node.computed) {
     this.push("[");
@@ -59,12 +60,10 @@ export function _method(node) {
  */
 
 export function FunctionExpression(node, parent) {
-  if (node.async) this.push("async ");
+  if (node.async) this.push("async");
   this.push("function");
-  if (node.generator) this.push("*");
 
   if (node.id) {
-    this.push(" ");
     this.print(node.id, node);
   } else {
     this.space();
@@ -72,6 +71,8 @@ export function FunctionExpression(node, parent) {
 
   this._params(node);
   this.space();
+  if (node.generator) this.push("*");
+  this.push({ type: {label: '->'} });
   this.print(node.body, node);
 }
 
@@ -87,7 +88,7 @@ export { FunctionExpression as FunctionDeclaration };
  */
 
 export function ArrowFunctionExpression(node, parent) {
-  if (node.async) this.push("async", " ");
+  if (node.async) this.push("async");
 
   if (node.params.length === 1 && t.isIdentifier(node.params[0])) {
     this.print(node.params[0], node);

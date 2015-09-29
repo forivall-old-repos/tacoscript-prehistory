@@ -48,6 +48,7 @@ var generators = {
   }
 };
 
+
 module.exports = function(name, parse, generate) {
   _.each(fixtures.translation, function (testSuite) {
     suite("translation-" + name + "/" + testSuite.title, function () {
@@ -57,7 +58,8 @@ module.exports = function(name, parse, generate) {
           var ast = parsers[parse](task[parse]);
           var generatedCode = generators[generate](ast, task.options, task[parse].code);
 
-          chai.expect(generatedCode).to.equal(task[generate].code, task[generate].loc + " (generated) !== " + task[parse].loc);
+          // TODO: remove use of _.trim
+          chai.expect(_.trim(generatedCode)).to.equal(_.trim(task[generate].code), task[parse].loc + " (generated) !== " + task[generate].loc);
         });
       });
     });

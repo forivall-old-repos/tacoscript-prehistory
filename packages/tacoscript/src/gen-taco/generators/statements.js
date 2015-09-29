@@ -1,4 +1,6 @@
 import * as t from "../../types";
+import { types as tt } from "babylon/lib/tokenizer/types";
+import { wb, sp, fsp, tab, nl } from "../token/types";
 
 /**
  * Prints WithStatement, prints object and body.
@@ -18,16 +20,14 @@ export function WithStatement(node) {
 
 export function IfStatement(node) {
   this.keyword("if");
-  this.push("(");
-  this.print(node.test, node);
-  this.push(")");
   this.space();
+  this.print(node.test, node);
 
   this.print(node.consequent, node);
 
   if (node.alternate) {
-    if (this.isLast("}")) this.space();
-    this.push("else", " ");
+    this.push("else");
+    this.space();
     this.print(node.alternate, node);
   }
 }
@@ -239,9 +239,9 @@ export function DebuggerStatement() {
  */
 
 export function VariableDeclaration(node, parent) {
-  this.push(node.kind, " ");
+  this.push(node.kind, sp);
 
-  var sep = [",", " "];
+  var sep = [tt.comma, sp];
   // sep = `,\n${repeating(" ", node.kind.length + 1)}`;
 
   this.printList(node.declarations, node, { separator: sep });

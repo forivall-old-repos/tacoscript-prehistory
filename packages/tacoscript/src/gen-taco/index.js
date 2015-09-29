@@ -1,10 +1,12 @@
 import repeating from "repeating";
+import detectIndent from "detect-indent";
 import TokenBuffer from "./token/buffer";
 import extend from "lodash/object/extend";
 import each from "lodash/collection/each";
 import n from "./node";
 import * as t from "../types";
 import { types as tt } from "babylon/lib/tokenizer/types";
+import { wb, sp, fsp, tab, nl } from "./token/types";
 
 import isArray from "lodash/lang/isArray";
 import includes from "lodash/collection/includes";
@@ -16,6 +18,12 @@ import includes from "lodash/collection/includes";
 class CodeGenerator {
   constructor(ast, opts, code) {
     opts = opts || {};
+    if (!opts.indent) {
+      opts.indent = detectIndent(code);
+      if (!opts.indent.type) {
+        opts.indent = {amount: 2, type: 'space', indent: '  '};
+      }
+    }
 
     this.comments = ast.comments || [];
     this.tokens   = ast.tokens || [];
@@ -58,7 +66,7 @@ class CodeGenerator {
     this.print(ast);
 
     return {
-      code: this.buffer.get(),
+      code: this.buffer.get(this.opts),
       tokens: this.buffer.tokens,
       directives: this.directives
     };
@@ -73,7 +81,8 @@ class CodeGenerator {
     // TODO
     for (let i = this._index; i < node.tokenStart; i++) {
       let token = this.tokens[i];
-      if (includes(['Whitespace', 'CommentLine', 'CommentBlock'], token.type)) {
+      // TODO: also catchup 'Whitespace', and handle indentation etc. appropriately
+      if (includes(['CommentLine', 'CommentBlock'], token.type)) {
         // console.log('catchup', i);
         this._push(token);
       }
@@ -84,7 +93,7 @@ class CodeGenerator {
   catchUpToBlockEnd() {
     // catch up to this nodes first token if we're behind
     // TODO
-    console.log('catchup');
+    // console.log('catchup');
   }
 
   /**
@@ -183,7 +192,9 @@ class CodeGenerator {
   printBlock(node, parent) {
     this.indent();
     if (t.isEmptyStatement(node)) {
-      this.printPass();
+      this.newline();
+      this.keyword('pass');
+      this.newline();
     } else {
       this.print(node, parent);
     }

@@ -60,6 +60,7 @@ export const types = {
   dot: new TokenType("."),
   question: new TokenType("?", beforeExpr),
   arrow: new TokenType("=>", beforeExpr),
+  unboundArrow: new TokenType("->", beforeExpr),
   template: new TokenType("template"),
   ellipsis: new TokenType("...", beforeExpr),
   backQuote: new TokenType("`", startsExpr),
@@ -111,25 +112,25 @@ function kw(name, options = {}) {
 
 kw("break");
 kw("case", beforeExpr);
-kw("catch");
+kw("catch", startsExpr);
 kw("continue");
 kw("debugger");
 kw("default", beforeExpr);
-kw("do", {isLoop: true});
+kw("do", {isLoop: true, startsExpr: true});
 kw("else", beforeExpr);
 kw("finally");
 kw("for", {isLoop: true});
 kw("function", startsExpr);
-kw("if");
+kw("if", startsExpr);
 kw("return", beforeExpr);
-kw("switch");
+kw("switch", startsExpr);
 kw("throw", beforeExpr);
 kw("try");
 kw("var");
 kw("let");
 kw("const");
 kw("while", {isLoop: true});
-kw("with");
+kw("with", startsExpr);
 kw("new", {beforeExpr: true, startsExpr: true});
 kw("this", startsExpr);
 kw("super", startsExpr);

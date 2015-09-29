@@ -19,14 +19,11 @@ export function Program(node, parent) {
  */
 
 export function BlockStatement(node, parent) {
-  this.push("{");
   if (node.body.length) {
     this.newline();
     this.printSequence(node.body, node, { indent: true });
-    this.rightBrace();
   } else {
     this.catchUpToBlockEnd();
-    this.push("}");
   }
 }
 
