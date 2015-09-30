@@ -71,6 +71,7 @@ class CodeGenerator {
     var ast = this.ast;
 
     this.print(ast);
+    this.catchUp();
 
     return {
       code: this.buffer.get(this.opts),
@@ -84,9 +85,10 @@ class CodeGenerator {
    */
 
   catchUp(node) {
+    this._catchUp(node == null ? this.tokens.length : node.tokenStart);
+  }
+  _catchUp(stop) {
     // catch up to this nodes first token if we're behind
-    // TODO
-    let stop = node == null ? this.tokens.length : node.tokenStart;
     for (let i = this._index; i < stop; i++) {
       let token = this.tokens[i];
       // TODO: also catchup 'Whitespace', and handle indentation etc. appropriately
@@ -106,13 +108,17 @@ class CodeGenerator {
         this._push(nl);
       }
     }
-    this._index = node.tokenStart;
+    this._index = stop;
   }
 
-  catchUpToBlockEnd() {
+  finishBlock(node, parent, options={}) {
     // catch up to this nodes first token if we're behind
-    // TODO
-    // console.log('catchup');
+    debugger
+    let { indent } = options;
+    // TODO: move to printSequence part of block to avoid redoing indent
+    if (indent) { this.indent(); }
+    this._catchUp(node.tokenEnd);
+    if (indent) { this.dedent(); }
   }
 
   /**

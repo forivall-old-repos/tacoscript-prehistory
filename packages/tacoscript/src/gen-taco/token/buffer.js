@@ -222,7 +222,7 @@ export default class TokenBuffer {
    */
 
   _push(token, options = {}) {
-    if (this.isLastTok(nl)) {
+    if (this.isLastTok(nl) && this._indent > 0) {
       this.tokens.push(new Token({ type: tab, value: this._indent }));
     }
     if (isString(token)) {

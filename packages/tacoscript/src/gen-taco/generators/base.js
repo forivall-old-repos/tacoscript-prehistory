@@ -27,9 +27,8 @@ export function BlockStatement(node, parent) {
   if (node.body.length) {
     this.newline();
     this.printSequence(node.body, node, { indent: true });
-  } else {
-    this.catchUpToBlockEnd();
   }
+  this.finishBlock(node, parent, {indent: true});
 }
 
 /**

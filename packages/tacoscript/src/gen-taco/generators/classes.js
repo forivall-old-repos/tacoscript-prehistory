@@ -41,7 +41,7 @@ export { ClassDeclaration as ClassExpression };
 export function ClassBody(node, parent) {
   this.push("{");
   if (node.body.length === 0) {
-    this.catchUpToBlockEnd();
+    this.finishBlock(node, parent);
     this.push("}");
   } else {
     this.newline();
@@ -50,7 +50,7 @@ export function ClassBody(node, parent) {
     this.printSequence(node.body, node);
     this.dedent();
 
-    this.catchUpToBlockEnd();
+    this.finishBlock(node, parent);
     this.rightBrace();
   }
 }
