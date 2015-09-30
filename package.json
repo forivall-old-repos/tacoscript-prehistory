@@ -21,6 +21,7 @@
     "rimraf": "^2.4.1",
     "semver": "^5.0.0",
     "shelljs": "^0.5.1",
+    "source-map-support": "^0.3.2",
     "uglify-js": "^2.4.16"
   },
   "babel": {
@@ -68,7 +69,9 @@
       "no-unreachable": 0,
       "no-use-before-define": 0,
       "no-unused-vars": 1,
-      "//quotes": ["double"],
+      "//quotes": [
+        "double"
+      ],
       "quotes": [
         2,
         "avoid-escape"

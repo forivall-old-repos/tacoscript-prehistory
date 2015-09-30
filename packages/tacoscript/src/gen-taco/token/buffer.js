@@ -170,7 +170,7 @@ export default class TokenBuffer {
     // never allow more than two lines
     // if (this.endsWith("\n\n")) return;
     let tokensLen = this.tokens.length;
-    if (this.tokens.length >= 2 && this.tokens[tokensLen - 2].type === nl && this.tokens[tokensLen].type === nl) {
+    if (this.tokens.length >= 2 && this.tokens[tokensLen - 2].type === nl && this.tokens[tokensLen - 1].type === nl) {
       return;
     }
 

@@ -1,4 +1,4 @@
-
+require('source-map-support').install({handleUncaughtExceptions: false});
 var mochaFixtures = require('mocha-fixtures-generic');
 var parseJs       = require("../lib/parse-js");
 var horchata      = require("horchata");
