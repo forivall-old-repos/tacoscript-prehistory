@@ -16,6 +16,9 @@ build-dist: build
 watch: clean
 	scripts/build.sh --watch
 
+watch-dev: clean
+	scripts/build.sh --watch --source-maps true
+
 lint:
 	node node_modules/.bin/eslint packages/*/src
 
