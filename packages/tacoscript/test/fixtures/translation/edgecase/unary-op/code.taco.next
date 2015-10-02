@@ -1,6 +1,6 @@
 delete delete i
 + +i
 not i
-not not i
+tobool i
 + ++i
 - --i

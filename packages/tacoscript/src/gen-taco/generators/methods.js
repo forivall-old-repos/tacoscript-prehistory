@@ -60,27 +60,38 @@ export function _method(node) {
  */
 
 export function FunctionExpression(node, parent) {
-  if (node.async) this.push("async");
-  this.push("function");
+  if (node.id) {
+    this.push("function");
+    this.print(node.id, node);
+  }
+  this._finishFunction(node, parent);
+}
 
+/**
+ * Prints FunctionDeclaration, prints id and body, handles async and generator.
+ */
+
+export function FunctionDeclaration(node, parent) {
+  this.push("function");
   if (node.id) {
     this.print(node.id, node);
   } else {
     this.space();
   }
+  this._finishFunction(node, parent);
+}
 
+export function _finishFunction(node, parent) {
   this._params(node);
   this.space();
   if (node.generator) this.push("*");
-  this.push({ type: {label: '->'} });
+  if (node.async) {
+    this.push({ type: {label: '~>'} });
+  } else {
+    this.push({ type: {label: '->'} });
+  }
   this.print(node.body, node);
 }
-
-/**
- * Alias FunctionExpression printer as FunctionDeclaration.
- */
-
-export { FunctionExpression as FunctionDeclaration };
 
 /**
  * Prints ArrowFunctionExpression, prints params and body, handles async.

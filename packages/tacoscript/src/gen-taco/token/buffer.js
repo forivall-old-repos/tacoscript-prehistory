@@ -379,6 +379,7 @@ const labelTokens = [
   'unboundArrow', 'blockCommentStart', 'lineCommentStart', 'blockCommentEnd'
 ];
 const valueTokens = [
+  // TODO: convert "!" prefix to "not" when emitting tokens
   'name', 'template', 'eq', 'assign', 'incDec', 'prefix',
   'logicalOR', 'logicalAND', 'bitwiseOR', 'bitwiseXOR', 'bitwiseAND',
   'equality', 'relational', 'bitShift', 'plusMin',
