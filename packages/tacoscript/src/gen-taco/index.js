@@ -132,8 +132,8 @@ class CodeGenerator {
       throw new ReferenceError(`unknown node of type ${JSON.stringify(node.type)} with constructor ${JSON.stringify(node && node.constructor.name)}`);
     }
 
-    var needsParens = n.needsParens(node, parent);
-    if (needsParens) { this.push("("); }
+    var generateParens = n.generateParens(node, parent);
+    for (let i = generateParens; i > 0; i--) { this.push("("); }
 
     this.catchUp(node);
 
@@ -143,7 +143,7 @@ class CodeGenerator {
 
     this[node.type](node, parent);
 
-    if (needsParens) { this.push(")"); }
+    for (let i = generateParens; i > 0; i--) { this.push(")"); }
 
     if (opts.after) opts.after();
 

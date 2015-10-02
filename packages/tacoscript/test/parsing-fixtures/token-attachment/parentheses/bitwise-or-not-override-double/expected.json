@@ -23,21 +23,7 @@
               "type": "Identifier",
               "name": "z"
             },
-            "parenthesizedExpression": true,
-            "leadingTokens": [
-              {
-                "type": {
-                  "label": "("
-                }
-              }
-            ],
-            "trailingTokens": [
-              {
-                "type": {
-                  "label": ")"
-                }
-              }
-            ]
+            "parenthesizedExpression": true
           }
         }
       }

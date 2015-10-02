@@ -256,6 +256,14 @@ export default class TokenBuffer {
     //   }
     // }
 
+    // Strip trailing whitespace
+    // TODO: only if not preserveWhitespace
+    if (token.type === nl) {
+      while (this.isLastTok(sp, fsp, tab)) {
+        this.tokens.pop();
+      }
+    }
+
     // TODO: position will be updated when tokens are serialized
     // this.position.push(token);
     this.tokens.push(token);
@@ -293,7 +301,6 @@ export default class TokenBuffer {
     if (this.tokens.length === 0) { return false; }
     return this.matchesTok(this.tokens[this.tokens.length - 1], tokType);
   }
-
 
   matches(token, cha) {
     var ctok;

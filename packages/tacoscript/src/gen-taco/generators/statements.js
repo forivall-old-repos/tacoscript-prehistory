@@ -38,23 +38,23 @@ export function IfStatement(node) {
 
 export function ForStatement(node) {
   this.keyword("for");
-  this.push("(");
-
+  this.space();
   this.print(node.init, node);
-  this.push(";");
 
   if (node.test) {
     this.space();
+    this.keyword("while");
+    this.space();
     this.print(node.test, node);
   }
-  this.push(";");
 
   if (node.update) {
+    this.space();
+    this.keyword("update");
     this.space();
     this.print(node.update, node);
   }
 
-  this.push(")");
   this.printBlock(node.body, node);
 }
 
@@ -78,11 +78,13 @@ export function WhileStatement(node) {
 var buildForXStatement = function (op) {
   return function (node) {
     this.keyword("for");
-    this.push("(");
+    this.space();
     this.print(node.left, node);
-    this.push(" ", op, " ");
+    this.space();
+    this.push(op);
+    this.space();
     this.print(node.right, node);
-    this.push(")");
+    this.space();
     this.printBlock(node.body, node);
   };
 };

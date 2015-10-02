@@ -110,6 +110,14 @@ export default class Node {
 
     return find(parens, node, parent);
   }
+
+  static generateParens(node, parent) {
+    let needsParens = Node.needsParens(node, parent);
+    if (needsParens || node.parenthesizedExpression) {
+      return 1;
+    }
+    return 0;
+  }
 }
 
 /**
