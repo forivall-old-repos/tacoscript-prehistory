@@ -1,4 +1,5 @@
-var fact5 = ((n) "fact" ->
-  if (n <= 1) return 1$#asi#$
-  return n * fact(n - 1)$#asi#$
+var fact5 = (function fact(n) ->
+  if n <= 1
+    return 1
+  return n * fact(n - 1)
 )(5)

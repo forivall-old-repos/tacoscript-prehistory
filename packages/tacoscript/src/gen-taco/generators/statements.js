@@ -22,6 +22,7 @@ export function IfStatement(node) {
   this.keyword("if");
   this.space();
   this.print(node.test, node);
+  // this.newline(1, true);
 
   this.print(node.consequent, node);
 

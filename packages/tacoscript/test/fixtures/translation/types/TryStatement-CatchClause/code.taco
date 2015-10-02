@@ -1,14 +1,14 @@
-try donothing catch err then donothing
+try
+catch err
 
 try
   bar
-catch err then donothing
+catch err
 
 try
   bar
 catch err
   foo()
-
 
 try
   bar
@@ -17,9 +17,8 @@ catch err
 finally
   yay()
 
-
 try
   bar
 catch err
   foo()
-finally donothing
+finally

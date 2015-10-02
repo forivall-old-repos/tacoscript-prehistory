@@ -1,5 +1,7 @@
-while foo then donothing
+while foo
+
+while foo
+  pass
 
 while foo
   bar()
-

@@ -1,7 +1,6 @@
-function foo() async ->
+function foo() ~>
   await bar()
 
 
-function bar() async ->
+function bar() ~>
   await* foo()
-

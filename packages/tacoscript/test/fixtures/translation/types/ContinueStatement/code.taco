@@ -4,4 +4,3 @@ for var i in foo
 
 foo: for var i in foo
   continue foo
-

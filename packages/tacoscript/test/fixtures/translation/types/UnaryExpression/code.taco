@@ -1,5 +1,5 @@
-delete delete i;
-+ +i;
-!!i;
-+ ++i;
-- --i;
+delete delete i
++ +i
+not not i
++ ++i
+- --i

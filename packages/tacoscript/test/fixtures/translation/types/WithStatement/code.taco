@@ -1,5 +1,4 @@
-with foo then donothing
+with foo
 
 with foo
   bar()
-
