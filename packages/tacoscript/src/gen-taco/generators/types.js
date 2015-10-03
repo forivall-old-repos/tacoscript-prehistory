@@ -176,19 +176,19 @@ export function _stringLiteral(val) {
     return "\\u" + ("0000" + c.charCodeAt(0).toString(16)).slice(-4);
   });
 
-  if (this.format.quotes === "single") {
-    // remove double quotes
-    val = val.slice(1, -1);
-
-    // unescape double quotes
-    val = val.replace(/\\"/g, '"');
-
-    // escape single quotes
-    val = val.replace(/'/g, "\\'");
-
-    // add single quotes
-    val = `'${val}'`;
-  }
+  // if (this.format.quotes === "single") {
+  //   // remove double quotes
+  //   val = val.slice(1, -1);
+  //
+  //   // unescape double quotes
+  //   val = val.replace(/\\"/g, '"');
+  //
+  //   // escape single quotes
+  //   val = val.replace(/'/g, "\\'");
+  //
+  //   // add single quotes
+  //   val = `'${val}'`;
+  // }
 
   return val;
 }
