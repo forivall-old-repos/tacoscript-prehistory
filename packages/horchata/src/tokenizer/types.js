@@ -157,3 +157,6 @@ kw("instanceof", {beforeExpr: true, binop: 7});
 kw("typeof", {beforeExpr: true, prefix: true, startsExpr: true});
 kw("void", {beforeExpr: true, prefix: true, startsExpr: true});
 kw("delete", {beforeExpr: true, prefix: true, startsExpr: true});
+
+kw("then", {beforeExpr: true, startsExpr: true});
+kw("exec", {beforeExpr: true, startsExpr: true});

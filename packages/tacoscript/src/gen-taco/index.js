@@ -113,7 +113,6 @@ class CodeGenerator {
 
   finishBlock(node, parent, options={}) {
     // catch up to this nodes first token if we're behind
-    debugger
     let { indent } = options;
     // TODO: move to printSequence part of block to avoid redoing indent
     if (indent) { this.indent(); }
@@ -147,6 +146,7 @@ class CodeGenerator {
 
     if (opts.after) opts.after();
 
+    if (opts.statement) this.terminateLine();
     // this.printTrailingTokens(node, parent);
   }
 
@@ -204,7 +204,7 @@ class CodeGenerator {
 
   printList(items, parent, opts = {}) {
     if (opts.separator == null) {
-      opts.separator = ",";
+      opts.separator = [tt.comma, sp];
     }
 
     return this.printJoin(items, parent, opts);
@@ -215,7 +215,8 @@ class CodeGenerator {
    */
 
   printBlock(node, parent) {
-    this.indent();
+    let isBlock = t.isBlockStatement(node);
+    if (!isBlock) this.indent();
     if (t.isEmptyStatement(node)) {
       this.newline();
       this.keyword('pass');
@@ -223,7 +224,7 @@ class CodeGenerator {
     } else {
       this.print(node, parent);
     }
-    this.dedent();
+    if (!isBlock) this.dedent();
   }
 }
 

@@ -2,6 +2,7 @@ import whitespace from "./whitespace";
 import * as parens from "./parentheses";
 import each from "lodash/collection/each";
 import some from "lodash/collection/some";
+import isArray from "lodash/lang/isArray";
 import * as t from "../../types";
 
 /**
@@ -117,6 +118,10 @@ export default class Node {
       return 1;
     }
     return 0;
+  }
+
+  static nextSiblingMatches(node, parent, type) {
+    if (!parent.body) {}
   }
 }
 

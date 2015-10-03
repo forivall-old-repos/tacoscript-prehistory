@@ -1,4 +1,5 @@
 import * as t from "../../types";
+import { types as tt } from "horchata/lib/tokenizer/types";
 import { wb, sp, tab, nl } from "../token/types";
 
 /**
@@ -86,9 +87,9 @@ export function _finishFunction(node, parent) {
   this.space();
   if (node.generator) this.push("*");
   if (node.async) {
-    this.push({ type: {label: '~>'} });
+    this.push(tt.asyncArrow);
   } else {
-    this.push({ type: {label: '->'} });
+    this.push(tt.unboundArrow);
   }
   this.print(node.body, node);
 }

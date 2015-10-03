@@ -1,17 +1,16 @@
+if foo then foobar()
 if foo
   foobar()
+
 if foo
-  foobar()
 if foo
-  pass
+  foo()
+else bar()
 if foo
   foo()
 else
   bar()
-if foo
-  foo()
-else
-  bar()
+
 if foo
   foo()
 else if bar

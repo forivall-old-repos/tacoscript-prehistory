@@ -2,6 +2,7 @@ require('source-map-support').install({handleUncaughtExceptions: false});
 var mochaFixtures = require('mocha-fixtures-generic');
 var assert = require("assert");
 var parseJs = require("../lib/parse-js");
+var printAst = require("../lib/helpers/print-ast").default;
 var misMatch = require("./_util").misMatch;
 var _ = require("lodash");
 
@@ -31,31 +32,7 @@ _.each(fixtures, function (suites, name) {
 });
 
 function save(test, ast) {
-  delete ast.tokens;
-  if (!ast.comments.length) delete ast.comments;
-  function recursiveDelete(obj) {
-    var i;
-    if ((typeof obj !== 'object') || obj == null) { return; }
-    if ('length' in obj) {
-      for (i = obj.length - 1; i >= 0; i--) {
-        recursiveDelete(obj[i]);
-      }
-      return;
-    }
-    delete obj.loc;
-    delete obj.start;
-    delete obj.end;
-    delete obj.tokens;
-    delete obj.children;
-    delete obj.tokenStart;
-    delete obj.tokenEnd;
-    var keys = Object.keys(obj);
-    for (i = keys.length - 1; i >= 0; i--) {
-      recursiveDelete(obj[keys[i]]);
-    }
-  }
-  recursiveDelete(ast);
-  require("fs").writeFileSync(test.expect.loc, JSON.stringify(ast, null, "  "));
+  require("fs").writeFileSync(test.expect.loc, printAst(ast));
 }
 
 function runTest(test) {

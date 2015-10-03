@@ -139,9 +139,7 @@ export default class TokenBuffer {
    * Strips multiple newlines if removeLast is true.
    */
 
-  newline(i, removeLast) {
-    removeLast = removeLast || false;
-
+  newline(i, removeLast = true) {
     if (isNumber(i)) {
       i = Math.min(2, i);
 
@@ -376,7 +374,7 @@ const labelTokens = [
   'bracketL', 'bracketR', 'braceL', 'braceR', 'parenL', 'parenR',
   'comma', 'semi', 'colon', 'doubleColon', 'dot', 'question', 'arrow',
   'ellipsis', 'backQuote', 'dollarBraceL', 'at',
-  'unboundArrow', 'blockCommentStart', 'lineCommentStart', 'blockCommentEnd'
+  'unboundArrow', 'asyncArrow', 'blockCommentStart', 'lineCommentStart', 'blockCommentEnd'
 ];
 const valueTokens = [
   // TODO: convert "!" prefix to "not" when emitting tokens
@@ -391,6 +389,7 @@ const valueTokens = [
   '_with', '_new', '_this', '_super', '_class', '_extends', '_export',
   '_import', '_yield', '_null', '_true', '_false', '_in', '_instanceof',
   '_typeof', '_void', '_delete',
+  '_exec', '_then',
   'commentBody'
 ];
 const rawTokens = ['num', 'regexp', 'string'];

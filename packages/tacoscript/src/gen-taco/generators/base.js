@@ -22,7 +22,7 @@ export function Program(node, parent) {
 
 export function BlockStatement(node, parent) {
   if (parent.type === 'Program') { // Probably also block; tests should reveal others
-    this.push(new Token({type: tt._do, value: 'do'}));
+    this.push(new Token({type: tt._exec, value: 'exec'}));
   }
   if (node.body.length) {
     this.newline();

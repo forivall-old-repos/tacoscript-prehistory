@@ -1,4 +1,5 @@
 import * as t from "../../types";
+import { wb, sp, tab, nl } from "../token/types";
 
 /**
  * Prints AnyTypeAnnotation.
@@ -39,7 +40,7 @@ export function BooleanLiteralTypeAnnotation(node) {
  */
 
 export function DeclareClass(node, parent) {
-  this.push("declare class ");
+  this.push("declare", "class");
   this._interfaceish(node);
 }
 
@@ -48,7 +49,7 @@ export function DeclareClass(node, parent) {
  */
 
 export function DeclareFunction(node, parent) {
-  this.push("declare function ");
+  this.push("declare", "function");
   this.print(node.id, node);
   this.print(node.id.typeAnnotation.typeAnnotation, node);
   this.terminateLine();
@@ -59,7 +60,7 @@ export function DeclareFunction(node, parent) {
  */
 
 export function DeclareModule(node, parent) {
-  this.push("declare module ");
+  this.push("declare", "module");
   this.print(node.id, node);
   this.space();
   this.print(node.body, node);
@@ -70,7 +71,7 @@ export function DeclareModule(node, parent) {
  */
 
 export function DeclareVariable(node, parent) {
-  this.push("declare var ");
+  this.push("declare", "var");
   this.print(node.id, node);
   this.print(node.id.typeAnnotation, node);
   this.terminateLine();
@@ -230,7 +231,7 @@ export function TupleTypeAnnotation(node, parent) {
  */
 
 export function TypeofTypeAnnotation(node, parent) {
-  this.push("typeof ");
+  this.push("typeof", sp);
   this.print(node.argument, node);
 }
 

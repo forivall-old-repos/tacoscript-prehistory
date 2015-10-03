@@ -1,5 +1,6 @@
 import * as t from "../../types";
 import { types as tt } from "horchata/lib/tokenizer/types";
+import { Token } from "horchata/lib/tokenizer";
 import { wb, sp, fsp, tab, nl } from "../token/types";
 
 /**
@@ -8,9 +9,7 @@ import { wb, sp, fsp, tab, nl } from "../token/types";
 
 export function WithStatement(node) {
   this.keyword("with");
-  this.push("(");
   this.print(node.object, node);
-  this.push(")");
   this.printBlock(node.body, node);
 }
 
@@ -18,17 +17,32 @@ export function WithStatement(node) {
  * Prints IfStatement, prints test, consequent, and alternate.
  */
 
-export function IfStatement(node) {
+export function IfStatement(node, parent) {
   this.keyword("if");
   this.space();
   this.print(node.test, node);
-  // this.newline(1, true);
+  // this.terminateLine();
 
+  // TODO: move these functions to before and after functions in the call to print,
+  // and evenually handle this with a transform.
+  let consequentIsBlock = node.consequent.type === 'BlockStatement';
+  if (!consequentIsBlock) {
+    this.push(sp, new Token({type: tt._then, value: 'then'}), sp);
+    // this.terminateLine();
+    // this.indent();
+  }
   this.print(node.consequent, node);
+  if (!consequentIsBlock) {
+    // this.dedent();
+  }
+
 
   if (node.alternate) {
     this.push("else");
-    this.space();
+    // if only element of alternate is an ifstatement, don't indent.
+    if (node.alternate.type !== 'BlockStatement') {
+      this.push(sp);
+    }
     this.print(node.alternate, node);
   }
 }
@@ -234,7 +248,7 @@ export function SwitchCase(node) {
  */
 
 export function DebuggerStatement() {
-  this.push("debugger", ";");
+  this.push("debugger", nl);
 }
 
 /**

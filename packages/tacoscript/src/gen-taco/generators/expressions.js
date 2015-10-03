@@ -187,7 +187,7 @@ export var AwaitExpression = buildYieldAwait("await");
  */
 
 export function EmptyStatement() {
-  this.terminateLine();
+  this.push("pass");
 }
 
 /**
@@ -196,7 +196,6 @@ export function EmptyStatement() {
 
 export function ExpressionStatement(node, parent) {
   this.print(node.expression, node);
-  this.terminateLine();
 }
 
 /**

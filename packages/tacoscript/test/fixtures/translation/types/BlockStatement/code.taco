@@ -1,5 +1,6 @@
-do donothing
+exec
+exec
+  pass
 
-do
+exec
   foo()
-
