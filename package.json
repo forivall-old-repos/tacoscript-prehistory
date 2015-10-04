@@ -6,7 +6,7 @@
     "babel-runtime": "^5.8.24",
     "babylon": "^5.7.2",
     "browserify": "^9.0.8",
-    "chai": "^2.2.0",
+    "chai": "3.3.0",
     "es5-shim": "^4.1.7",
     "eslint": "^0.21.2",
     "fs-readdir-recursive": "^0.1.2",
